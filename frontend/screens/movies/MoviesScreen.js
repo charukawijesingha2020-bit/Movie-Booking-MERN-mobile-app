@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const App = () => {
+const MoviesScreen = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Movie Booking App</Text>
-      <Text>Welcome to the Movie Booking Mobile App!</Text>
+      <Text style={styles.title}>Movies</Text>
+      <Text>Here you can browse available movies.</Text>
     </View>
   );
 };
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default MoviesScreen;
