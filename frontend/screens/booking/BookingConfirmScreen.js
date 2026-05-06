@@ -59,7 +59,7 @@ const s = StyleSheet.create({
   iconWrap: { marginTop: 20, marginBottom: 12 },
   icon: { fontSize: 64 },
   title: { fontSize: 26, fontWeight: 'bold', color: '#fff', marginBottom: 6 },
-  subtitle: { color: '#aaa', fontSize: 14, marginBottom: 24, textAlign: 'center' },
+  subtitle: { color: '#e7d0d0ff', fontSize: 14, marginBottom: 24, textAlign: 'center' },
   ticket: { backgroundColor: '#1a1a1a', borderRadius: 18, width: '100%', overflow: 'hidden', borderWidth: 1, borderColor: '#333' },
   ticketHeader: { backgroundColor: '#E50914', padding: 14, alignItems: 'center' },
   ticketHeaderText: { color: '#fff', fontWeight: 'bold', fontSize: 16, letterSpacing: 2 },
