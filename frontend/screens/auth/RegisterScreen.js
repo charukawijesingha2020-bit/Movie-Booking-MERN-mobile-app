@@ -26,7 +26,7 @@ export default function RegisterScreen({ navigation }) {
     try {
       await register(name.trim(), email.trim(), password);
     } catch (err) {
-      Alert.alert('Registration Failed', err?.response?.data?.message || 'Something went wrong');
+      Alert.alert('Registration Failed', err?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }

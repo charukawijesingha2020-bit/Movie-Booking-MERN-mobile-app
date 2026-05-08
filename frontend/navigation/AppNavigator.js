@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 // Auth Screens
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
+import AdminLoginScreen from '../screens/auth/AdminLoginScreen';
 
 // User Screens
 import HomeScreen from '../screens/HomeScreen';
@@ -42,6 +43,7 @@ function AuthStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="AdminLogin" component={AdminLoginScreen} />
     </Stack.Navigator>
   );
 }
@@ -85,7 +87,7 @@ function AdminTabs() {
           const name = icons[route.name] + (focused ? '' : '-outline');
           return <Ionicons name={name} size={size} color={color} />;
         },
-        tabBarActiveTintColor: COLORS.primary,
+        tabBarActiveTintColor: '#f5a623',
         tabBarInactiveTintColor: COLORS.muted,
         tabBarStyle: { backgroundColor: COLORS.card, borderTopColor: '#333' },
         headerStyle: { backgroundColor: COLORS.dark },
