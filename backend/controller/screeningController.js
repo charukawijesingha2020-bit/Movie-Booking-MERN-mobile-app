@@ -92,7 +92,20 @@ const deleteScreening = async (req, res) => {
   }
 };
 
+// @route GET /api/screenings/all  [Admin — includes inactive]
+const getAllScreenings = async (req, res) => {
+  try {
+    const screenings = await Screening.find()
+      .populate('movie', 'title poster duration genre rating')
+      .populate({ path: 'hall', populate: { path: 'company', select: 'name' } })
+      .sort({ date: 1, showtime: 1 });
+    res.json(screenings);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
-  getScreenings, getScreeningsByHall, getScreeningsByMovie,
+  getScreenings, getAllScreenings, getScreeningsByHall, getScreeningsByMovie,
   getScreeningById, createScreening, updateScreening, deleteScreening
 };

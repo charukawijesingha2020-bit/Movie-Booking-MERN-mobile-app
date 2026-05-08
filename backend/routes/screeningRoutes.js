@@ -1,12 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getScreenings, getScreeningsByHall, getScreeningsByMovie,
+  getScreenings, getAllScreenings, getScreeningsByHall, getScreeningsByMovie,
   getScreeningById, createScreening, updateScreening, deleteScreening
 } = require('../controller/screeningController');
 const { protect, adminOnly } = require('../middleware/auth');
 
 router.get('/', getScreenings);
+router.get('/all', protect, adminOnly, getAllScreenings);
 router.get('/hall/:hallId', getScreeningsByHall);
 router.get('/movie/:movieId', getScreeningsByMovie);
 router.get('/:id', getScreeningById);

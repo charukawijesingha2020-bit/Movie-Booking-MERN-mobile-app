@@ -10,6 +10,8 @@ export default function MyBookingsScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+
+
   const fetchBookings = useCallback(async () => {
     try {
       const { data } = await api.get('/bookings/my');
@@ -35,6 +37,8 @@ export default function MyBookingsScreen({ navigation }) {
       }
     ]);
   };
+
+
 
   if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#E50914" /></View>;
 

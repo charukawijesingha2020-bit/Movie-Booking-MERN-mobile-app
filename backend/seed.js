@@ -34,6 +34,15 @@ const seed = async () => {
     });
     console.log('👤 Admin created:', admin.email);
 
+    // --- Predefined User (as requested) ---
+    await User.create({
+      name: 'User',
+      email: 'user@gmail.com',
+      password: 'user123',
+      role: 'user',
+    });
+    console.log('👤 Predefined user created: user@gmail.com');
+
     // --- Sample User ---
     await User.create({
       name: 'John Doe',
@@ -123,8 +132,9 @@ const seed = async () => {
 
     console.log('\n✅ Seed complete!');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('Admin Login: admin@cinema.com / Admin@123');
-    console.log('User Login:  user@cinema.com  / User@123');
+    console.log('Admin Login:          admin@cinema.com  / Admin@123');
+    console.log('Predefined User:      user@gmail.com    / user123');
+    console.log('Sample User:          user@cinema.com   / User@123');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     process.exit(0);
   } catch (error) {

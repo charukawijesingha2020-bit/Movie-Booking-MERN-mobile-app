@@ -30,23 +30,40 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    await AsyncStorage.setItem('token', data.token);
-    await AsyncStorage.setItem('user', JSON.stringify(data));
-    api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-    setToken(data.token);
-    setUser(data);
-    return data;
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('user', JSON.stringify(data));
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      setToken(data.token);
+      setUser(data);
+      return data;
+    } catch (error) {
+      // Re-throw with a clean message the screens can read
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Login failed. Please try again.';
+      throw new Error(message);
+    }
   };
 
   const register = async (name, email, password) => {
-    const { data } = await api.post('/auth/register', { name, email, password });
-    await AsyncStorage.setItem('token', data.token);
-    await AsyncStorage.setItem('user', JSON.stringify(data));
-    api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
-    setToken(data.token);
-    setUser(data);
-    return data;
+    try {
+      const { data } = await api.post('/auth/register', { name, email, password });
+      await AsyncStorage.setItem('token', data.token);
+      await AsyncStorage.setItem('user', JSON.stringify(data));
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      setToken(data.token);
+      setUser(data);
+      return data;
+    } catch (error) {
+      const message =
+        error?.response?.data?.message ||
+        error?.message ||
+        'Registration failed. Please try again.';
+      throw new Error(message);
+    }
   };
 
   const logout = async () => {
