@@ -22,7 +22,7 @@ export default function AdminScreeningsScreen() {
   const fetchData = useCallback(async () => {
     try {
       const [sc, m, h] = await Promise.all([
-        api.get('/screenings'),
+        api.get('/screenings/all'),
         api.get('/movies/all'),
         api.get('/halls'),
       ]);

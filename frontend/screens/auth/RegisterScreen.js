@@ -24,9 +24,9 @@ export default function RegisterScreen({ navigation }) {
       return Alert.alert('Error', 'Password must be at least 6 characters');
     setLoading(true);
     try {
-      await register(name.trim(), email.trim(), password);
+      await register(name.trim(), email.trim().toLowerCase(), password);
     } catch (err) {
-      Alert.alert('Registration Failed', err?.response?.data?.message || 'Something went wrong');
+      Alert.alert('Registration Failed', err?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
