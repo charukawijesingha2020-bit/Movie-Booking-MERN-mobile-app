@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, ActivityIndicator,
-  Alert, Modal, TextInput, TouchableOpacity, RefreshControl,
+  Alert, TouchableOpacity, RefreshControl,
 } from 'react-native';
 import api from '../../services/api';
 
@@ -9,9 +9,6 @@ export default function AdminBookingsScreen() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [replyModal, setReplyModal] = useState(null);  // { reviewId, currentReply }
-  const [replyText, setReplyText] = useState('');
-  const [savingReply, setSavingReply] = useState(false);
 
   const fetchBookings = useCallback(async () => {
     try {

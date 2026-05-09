@@ -26,7 +26,8 @@ export default function FeedbacksScreen({ navigation }) {
       setMovies(data);
       if (data.length > 0) {
         setSelectedMovie(data[0]);
-        fetchReviews(data[0]._id);
+        const { data: reviewData } = await api.get(`/reviews/movie/${data[0]._id}`);
+        setReviews(reviewData);
       }
     } catch (e) { console.log(e); }
     finally { setLoading(false); setRefreshing(false); }
@@ -98,6 +99,7 @@ export default function FeedbacksScreen({ navigation }) {
 
       {/* Reviews list */}
       <FlatList
+        style={{ flex: 1 }}
         data={reviews}
         keyExtractor={item => item._id}
         contentContainerStyle={{ padding: 14, paddingBottom: 30 }}
@@ -113,7 +115,7 @@ export default function FeedbacksScreen({ navigation }) {
           <View style={s.reviewCard}>
             <View style={s.reviewHeader}>
               <View style={s.avatar}>
-                <Text style={s.avatarText}>{item.user?.name?.charAt(0).toUpperCase()}</Text>
+                <Text style={s.avatarText}>{item.user?.name?.charAt(0)?.toUpperCase() ?? '?'}</Text>
               </View>
               <View style={s.reviewerInfo}>
                 <Text style={s.reviewerName}>{item.user?.name}</Text>
