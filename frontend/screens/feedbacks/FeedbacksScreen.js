@@ -6,11 +6,11 @@ import {
 import api from '../../services/api';
 
 const Stars = ({ rating }) => (
-  <Text style={{ fontSize: 14, letterSpacing: 1 }}>
+  <View style={{ flexDirection: 'row' }}>
     {[1, 2, 3, 4, 5].map(i => (
-      <Text key={i} style={{ color: i <= rating ? '#ffd700' : '#444' }}>★</Text>
+      <Text key={i} style={{ fontSize: 14, color: i <= rating ? '#ffd700' : '#444' }}>★</Text>
     ))}
-  </Text>
+  </View>
 );
 
 export default function FeedbacksScreen({ navigation }) {
