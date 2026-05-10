@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
-  Image, FlatList, ActivityIndicator, RefreshControl,
+  Image, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -53,22 +53,17 @@ export default function HomeScreen({ navigation }) {
 
       {/* Featured Movies */}
       <Text style={styles.sectionTitle}>🔥 Featured Movies</Text>
-      <FlatList
-        horizontal
-        data={movies}
-        keyExtractor={item => item._id}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16 }}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.movieCard} onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16 }}>
+        {movies.map(item => (
+          <TouchableOpacity key={item._id} style={styles.movieCard} onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
             <Image source={{ uri: item.poster || 'https://via.placeholder.com/120x180?text=No+Image' }}
               style={styles.moviePoster} resizeMode="cover" />
             <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
             <Text style={styles.movieMeta}>{item.genre?.[0]} • {item.duration}min</Text>
             <View style={styles.ratingBadge}><Text style={styles.ratingText}>{item.rating}</Text></View>
           </TouchableOpacity>
-        )}
-      />
+        ))}
+      </ScrollView>
 
       {/* Cinema Companies */}
       <Text style={styles.sectionTitle}>🏢 Cinema Companies</Text>

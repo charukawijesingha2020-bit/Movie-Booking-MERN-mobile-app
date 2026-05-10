@@ -88,7 +88,7 @@ export default function AdminHallsScreen() {
             <View style={s.cardBody}>
               <Text style={s.cardTitle}>{item.name}</Text>
               <Text style={s.cardCompany}>{item.company?.name}</Text>
-              <Text style={s.cardMeta}>{item.rows} rows × {item.seatsPerRow} seats = <Text style={{ color: '#E50914', fontWeight: 'bold' }}>{item.rows * item.seatsPerRow}</Text> total</Text>
+              <Text style={s.cardMeta}>{item.rows} rows × {item.seatsPerRow} seats = <Text style={s.totalHighlight}>{item.rows * item.seatsPerRow}</Text> total</Text>
             </View>
             <View style={s.actions}>
               <TouchableOpacity style={s.editBtn} onPress={() => openEdit(item)}>
@@ -192,6 +192,7 @@ const s = StyleSheet.create({
   mLabel: { color: '#aaa', fontSize: 13, marginBottom: 5, marginTop: 10 },
   mInput: { backgroundColor: '#2a2a2a', color: '#fff', borderRadius: 8, padding: 11, fontSize: 14, borderWidth: 1, borderColor: '#333' },
   totalSeats: { color: '#2a9d8f', fontWeight: 'bold', fontSize: 14, textAlign: 'center', marginTop: 12 },
+  totalHighlight: { color: '#E50914', fontWeight: 'bold' },
   modalActions: { flexDirection: 'row', gap: 10, marginTop: 18 },
   cancelBtn: { flex: 1, borderWidth: 1, borderColor: '#444', borderRadius: 10, padding: 13, alignItems: 'center', marginTop: 10 },
   cancelBtnText: { color: '#aaa', fontWeight: 'bold' },
