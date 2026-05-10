@@ -3,6 +3,12 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
+const T = {
+  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
+  border: '#252536', primary: '#f59e0b', text: '#f1f5f9',
+  muted: '#64748b', subtle: '#94a3b8', danger: '#e50914',
+};
+
 const StatCard = ({ icon, label, value, color }) => (
   <View style={[s.statCard, { borderTopColor: color }]}>
     <Text style={s.statIcon}>{icon}</Text>
@@ -20,10 +26,8 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       const [m, c, h, b] = await Promise.all([
-        api.get('/movies/all'),
-        api.get('/companies'),
-        api.get('/halls'),
-        api.get('/bookings'),
+        api.get('/movies/all'), api.get('/companies'),
+        api.get('/halls'), api.get('/bookings'),
       ]);
       setStats({ movies: m.data.length, companies: c.data.length, halls: h.data.length, bookings: b.data.length });
     } catch (e) { console.log(e); }
@@ -32,49 +36,56 @@ export default function AdminDashboard() {
 
   useEffect(() => { fetchStats(); }, []);
 
-  if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#E50914" /></View>;
-
-  const totalRevenue = 0; // Could compute from bookings if needed
+  if (loading) return <View style={s.center}><ActivityIndicator size="large" color={T.primary} /></View>;
 
   return (
     <ScrollView style={s.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchStats(); }} tintColor="#E50914" />}>
-      {/* Admin Header */}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchStats(); }} tintColor={T.primary} />}>
+
       <View style={s.header}>
         <View>
-          <Text style={s.greeting}>Admin Panel 🎬</Text>
-          <Text style={s.subGreeting}>Welcome, {user?.name}</Text>
+          <Text style={s.greeting}>Admin Panel</Text>
+          <Text style={s.greetingSub}>Welcome back, {user?.name}</Text>
         </View>
         <TouchableOpacity style={s.logoutBtn} onPress={logout}>
           <Text style={s.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={s.sectionTitle}>📊 Overview</Text>
-      <View style={s.statsGrid}>
-        <StatCard icon="🎬" label="Movies" value={stats.movies} color="#E50914" />
-        <StatCard icon="🏢" label="Companies" value={stats.companies} color="#2a9d8f" />
-        <StatCard icon="🏟️" label="Halls" value={stats.halls} color="#e9c46a" />
-        <StatCard icon="🎟️" label="Bookings" value={stats.bookings} color="#a8dadc" />
-      </View>
-
-      {/* Quick Actions */}
-      <Text style={s.sectionTitle}>⚡ Quick Info</Text>
-      <View style={s.infoCard}>
-        <Text style={s.infoText}>• Use the tabs below to manage Movies, Companies, Halls and Screenings.</Text>
-        <Text style={s.infoText}>• Assign movies to halls via the <Text style={s.infoHighlight}>Screenings</Text> tab.</Text>
-        <Text style={s.infoText}>• View all user bookings in the <Text style={s.infoHighlight}>Bookings</Text> tab.</Text>
-        <Text style={s.infoText}>• Reply to user reviews from the <Text style={s.infoHighlight}>Reviews</Text> section.</Text>
-      </View>
-
-      <Text style={s.sectionTitle}>👤 Admin Account</Text>
       <View style={s.accountCard}>
-        <View style={s.accountAvatar}><Text style={s.accountAvatarText}>A</Text></View>
-        <View>
+        <View style={s.avatarWrap}>
+          <Text style={s.avatarText}>{user?.name?.charAt(0)?.toUpperCase()}</Text>
+        </View>
+        <View style={s.accountInfo}>
           <Text style={s.accountName}>{user?.name}</Text>
           <Text style={s.accountEmail}>{user?.email}</Text>
-          <View style={s.adminBadge}><Text style={s.adminBadgeText}>ADMINISTRATOR</Text></View>
         </View>
+        <View style={s.adminBadge}>
+          <Text style={s.adminBadgeText}>ADMIN</Text>
+        </View>
+      </View>
+
+      <Text style={s.sectionTitle}>Overview</Text>
+      <View style={s.statsGrid}>
+        <StatCard icon="🎬" label="Movies" value={stats.movies} color="#e50914" />
+        <StatCard icon="🏢" label="Companies" value={stats.companies} color="#10b981" />
+        <StatCard icon="🏟️" label="Halls" value={stats.halls} color={T.primary} />
+        <StatCard icon="🎟️" label="Bookings" value={stats.bookings} color="#6366f1" />
+      </View>
+
+      <Text style={s.sectionTitle}>Quick Guide</Text>
+      <View style={s.guideCard}>
+        {[
+          { icon: '🎬', text: 'Add and manage movies in the Movies tab' },
+          { icon: '🏢', text: 'Manage cinema companies in Companies tab' },
+          { icon: '📅', text: 'Assign movies to halls via Screenings tab' },
+          { icon: '🎟️', text: 'View all user bookings in the Bookings tab' },
+        ].map((item, i) => (
+          <View key={i} style={s.guideRow}>
+            <Text style={s.guideIcon}>{item.icon}</Text>
+            <Text style={s.guideText}>{item.text}</Text>
+          </View>
+        ))}
       </View>
 
       <View style={{ height: 30 }} />
@@ -83,27 +94,29 @@ export default function AdminDashboard() {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#141414' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 10 },
-  greeting: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
-  subGreeting: { color: '#aaa', fontSize: 13, marginTop: 2 },
-  logoutBtn: { backgroundColor: '#2a2a2a', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8 },
-  logoutText: { color: '#E50914', fontWeight: 'bold', fontSize: 13 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: '#fff', marginHorizontal: 16, marginTop: 20, marginBottom: 12 },
+  container: { flex: 1, backgroundColor: T.bg },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: T.bg },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 12 },
+  greeting: { fontSize: 22, fontWeight: '800', color: T.text },
+  greetingSub: { color: T.muted, fontSize: 13, marginTop: 3 },
+  logoutBtn: { backgroundColor: T.surface, paddingHorizontal: 16, paddingVertical: 9, borderRadius: 20, borderWidth: 1, borderColor: T.border },
+  logoutText: { color: T.danger, fontWeight: '700', fontSize: 13 },
+  accountCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: T.surface, marginHorizontal: 16, marginBottom: 8, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: T.primary + '44' },
+  avatarWrap: { width: 52, height: 52, borderRadius: 26, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
+  avatarText: { color: '#000', fontSize: 22, fontWeight: '800' },
+  accountInfo: { flex: 1 },
+  accountName: { color: T.text, fontWeight: '700', fontSize: 16 },
+  accountEmail: { color: T.muted, fontSize: 13, marginTop: 2 },
+  adminBadge: { backgroundColor: T.primary + '22', borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5, borderWidth: 1, borderColor: T.primary },
+  adminBadgeText: { color: T.primary, fontSize: 11, fontWeight: '800', letterSpacing: 1 },
+  sectionTitle: { color: T.text, fontSize: 18, fontWeight: '700', marginHorizontal: 16, marginTop: 24, marginBottom: 14 },
   statsGrid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: 10 },
-  statCard: { width: '46%', backgroundColor: '#1a1a1a', borderRadius: 14, padding: 18, margin: '2%', borderTopWidth: 3, alignItems: 'center' },
-  statIcon: { fontSize: 28, marginBottom: 8 },
-  statValue: { fontSize: 30, fontWeight: 'bold' },
-  statLabel: { color: '#aaa', fontSize: 12, marginTop: 4 },
-  infoCard: { backgroundColor: '#1a1a1a', borderRadius: 14, padding: 16, marginHorizontal: 16, gap: 8 },
-  infoText: { color: '#aaa', fontSize: 13, lineHeight: 22 },
-  infoHighlight: { color: '#E50914', fontWeight: 'bold' },
-  accountCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#1a1a1a', borderRadius: 14, padding: 16, marginHorizontal: 16 },
-  accountAvatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#E50914', justifyContent: 'center', alignItems: 'center', marginRight: 14 },
-  accountAvatarText: { color: '#fff', fontSize: 24, fontWeight: 'bold' },
-  accountName: { color: '#fff', fontWeight: 'bold', fontSize: 17 },
-  accountEmail: { color: '#aaa', fontSize: 13, marginTop: 2 },
-  adminBadge: { backgroundColor: '#2a2a2a', borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3, marginTop: 6, alignSelf: 'flex-start' },
-  adminBadgeText: { color: '#E50914', fontSize: 10, fontWeight: 'bold', letterSpacing: 1 },
+  statCard: { width: '46%', backgroundColor: T.surface, borderRadius: 16, padding: 18, margin: '2%', borderTopWidth: 3, alignItems: 'center', borderWidth: 1, borderColor: T.border },
+  statIcon: { fontSize: 28, marginBottom: 10 },
+  statValue: { fontSize: 32, fontWeight: '800' },
+  statLabel: { color: T.muted, fontSize: 12, marginTop: 4, fontWeight: '600' },
+  guideCard: { backgroundColor: T.surface, borderRadius: 18, padding: 18, marginHorizontal: 16, borderWidth: 1, borderColor: T.border, gap: 14 },
+  guideRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  guideIcon: { fontSize: 20, width: 28 },
+  guideText: { color: T.subtle, fontSize: 14, flex: 1, lineHeight: 20 },
 });
