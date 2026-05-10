@@ -14,6 +14,7 @@ const Row = ({ label, value, highlight }) => (
   </View>
 );
 
+
 export default function BookingConfirmScreen({ route, navigation }) {
   const { booking } = route.params;
   const sc = booking?.screening;
