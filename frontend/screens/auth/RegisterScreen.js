@@ -5,7 +5,11 @@ import {
 } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 
-const COLORS = { primary: '#E50914', dark: '#141414', card: '#1a1a1a', input: '#2a2a2a', text: '#fff', muted: '#aaa' };
+const T = {
+  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
+  border: '#252536', primary: '#e50914', text: '#f1f5f9',
+  muted: '#64748b', subtle: '#94a3b8',
+};
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');
@@ -27,46 +31,45 @@ export default function RegisterScreen({ navigation }) {
       await register(name.trim(), email.trim().toLowerCase(), password);
     } catch (err) {
       Alert.alert('Registration Failed', err?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        <View style={styles.logoWrap}>
-          <Text style={styles.logoIcon}>🎬</Text>
-          <Text style={styles.logoText}>CineBook</Text>
-          <Text style={styles.tagline}>Join the cinema experience</Text>
+    <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={s.container} keyboardShouldPersistTaps="handled">
+        <View style={s.hero}>
+          <View style={s.logoRing}>
+            <Text style={s.logoEmoji}>🎬</Text>
+          </View>
+          <Text style={s.logoText}>CineBook</Text>
+          <Text style={s.tagline}>Join the cinema experience</Text>
         </View>
 
-        <View style={styles.card}>
-          <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Book your favourite movies</Text>
+        <View style={s.card}>
+          <Text style={s.cardTitle}>Create Account</Text>
+          <Text style={s.cardSub}>Fill in your details to get started</Text>
 
-          <Text style={styles.label}>Full Name</Text>
-          <TextInput style={styles.input} placeholder="John Doe" placeholderTextColor={COLORS.muted}
-            value={name} onChangeText={setName} />
+          {[
+            { label: 'Full Name', value: name, setter: setName, placeholder: 'John Doe' },
+            { label: 'Email', value: email, setter: setEmail, placeholder: 'you@email.com', keyboard: 'email-address', caps: 'none' },
+            { label: 'Password', value: password, setter: setPassword, placeholder: 'Min. 6 characters', secure: true },
+            { label: 'Confirm Password', value: confirm, setter: setConfirm, placeholder: 'Repeat password', secure: true },
+          ].map(f => (
+            <View key={f.label} style={s.fieldWrap}>
+              <Text style={s.fieldLabel}>{f.label}</Text>
+              <TextInput style={s.input} placeholder={f.placeholder} placeholderTextColor={T.muted}
+                value={f.value} onChangeText={f.setter} secureTextEntry={f.secure}
+                keyboardType={f.keyboard || 'default'} autoCapitalize={f.caps || 'words'} />
+            </View>
+          ))}
 
-          <Text style={styles.label}>Email</Text>
-          <TextInput style={styles.input} placeholder="you@email.com" placeholderTextColor={COLORS.muted}
-            value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" />
-
-          <Text style={styles.label}>Password</Text>
-          <TextInput style={styles.input} placeholder="Min. 6 characters" placeholderTextColor={COLORS.muted}
-            value={password} onChangeText={setPassword} secureTextEntry />
-
-          <Text style={styles.label}>Confirm Password</Text>
-          <TextInput style={styles.input} placeholder="Repeat password" placeholderTextColor={COLORS.muted}
-            value={confirm} onChangeText={setConfirm} secureTextEntry />
-
-          <TouchableOpacity style={styles.btn} onPress={handleRegister} disabled={loading}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>Create Account</Text>}
+          <TouchableOpacity style={[s.btn, loading && s.btnDisabled]} onPress={handleRegister} disabled={loading}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={s.btnText}>Create Account</Text>}
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.linkWrap}>
-            <Text style={styles.link}>Already have an account? <Text style={styles.linkBold}>Sign In</Text></Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')} style={s.linkRow}>
+            <Text style={s.linkText}>Already have an account? </Text>
+            <Text style={s.linkBold}>Sign In</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -74,21 +77,24 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: '#141414' },
+const s = StyleSheet.create({
+  flex: { flex: 1, backgroundColor: T.bg },
   container: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  logoWrap: { alignItems: 'center', marginBottom: 36 },
-  logoIcon: { fontSize: 64 },
-  logoText: { fontSize: 36, fontWeight: 'bold', color: '#E50914', letterSpacing: 2 },
-  tagline: { color: '#aaa', marginTop: 4, fontSize: 14 },
-  card: { backgroundColor: '#1a1a1a', borderRadius: 16, padding: 24, elevation: 8 },
-  title: { fontSize: 24, fontWeight: 'bold', color: '#fff', marginBottom: 4 },
-  subtitle: { color: '#aaa', marginBottom: 24, fontSize: 14 },
-  label: { color: '#aaa', fontSize: 13, marginBottom: 6, marginTop: 12 },
-  input: { backgroundColor: '#2a2a2a', color: '#fff', borderRadius: 10, padding: 14, fontSize: 15, borderWidth: 1, borderColor: '#333' },
-  btn: { backgroundColor: '#E50914', borderRadius: 10, padding: 16, alignItems: 'center', marginTop: 24 },
-  btnText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-  linkWrap: { marginTop: 20, alignItems: 'center' },
-  link: { color: '#aaa', fontSize: 14 },
-  linkBold: { color: '#E50914', fontWeight: 'bold' },
+  hero: { alignItems: 'center', marginBottom: 40 },
+  logoRing: { width: 90, height: 90, borderRadius: 45, backgroundColor: T.surface, borderWidth: 2, borderColor: T.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  logoEmoji: { fontSize: 40 },
+  logoText: { fontSize: 34, fontWeight: '800', color: T.primary, letterSpacing: 3 },
+  tagline: { color: T.muted, marginTop: 6, fontSize: 13, letterSpacing: 0.5 },
+  card: { backgroundColor: T.surface, borderRadius: 24, padding: 28, borderWidth: 1, borderColor: T.border },
+  cardTitle: { fontSize: 24, fontWeight: '700', color: T.text, marginBottom: 4 },
+  cardSub: { color: T.muted, fontSize: 14, marginBottom: 24 },
+  fieldWrap: { marginBottom: 14 },
+  fieldLabel: { color: T.subtle, fontSize: 12, fontWeight: '600', letterSpacing: 0.8, marginBottom: 8, textTransform: 'uppercase' },
+  input: { backgroundColor: T.elevated, color: T.text, borderRadius: 12, padding: 16, fontSize: 15, borderWidth: 1, borderColor: T.border },
+  btn: { backgroundColor: T.primary, borderRadius: 14, padding: 17, alignItems: 'center', marginTop: 8 },
+  btnDisabled: { opacity: 0.6 },
+  btnText: { color: '#fff', fontWeight: '700', fontSize: 16, letterSpacing: 0.5 },
+  linkRow: { flexDirection: 'row', justifyContent: 'center', marginTop: 20 },
+  linkText: { color: T.muted, fontSize: 14 },
+  linkBold: { color: T.primary, fontWeight: '700', fontSize: 14 },
 });

@@ -35,7 +35,7 @@ import AdminBookingsScreen from '../screens/admin/AdminBookingsScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const COLORS = { primary: '#E50914', dark: '#03021aff', card: '#1a1a1a', text: '#fff', muted: '#888' };
+const COLORS = { primary: '#e50914', adminPrimary: '#f59e0b', dark: '#09090f', card: '#13131f', border: '#252536', text: '#f1f5f9', muted: '#64748b' };
 
 // ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
@@ -60,10 +60,10 @@ function UserTabs() {
         },
         tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: COLORS.muted,
-        tabBarStyle: { backgroundColor: COLORS.card, borderTopColor: '#333' },
-        headerStyle: { backgroundColor: COLORS.dark },
+        tabBarStyle: { backgroundColor: COLORS.card, borderTopColor: COLORS.border, height: 60, paddingBottom: 8 },
+        headerStyle: { backgroundColor: COLORS.dark, shadowColor: 'transparent', elevation: 0, borderBottomWidth: 1, borderBottomColor: COLORS.border },
         headerTintColor: COLORS.text,
-        headerTitleStyle: { fontWeight: 'bold' },
+        headerTitleStyle: { fontWeight: '700', fontSize: 16 },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} options={{ title: '🎬 CineBook' }} />
@@ -87,12 +87,12 @@ function AdminTabs() {
           const name = icons[route.name] + (focused ? '' : '-outline');
           return <Ionicons name={name} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#f5a623',
+        tabBarActiveTintColor: COLORS.adminPrimary,
         tabBarInactiveTintColor: COLORS.muted,
-        tabBarStyle: { backgroundColor: COLORS.card, borderTopColor: '#333' },
-        headerStyle: { backgroundColor: COLORS.dark },
+        tabBarStyle: { backgroundColor: COLORS.card, borderTopColor: COLORS.border, height: 60, paddingBottom: 8 },
+        headerStyle: { backgroundColor: COLORS.dark, shadowColor: 'transparent', elevation: 0, borderBottomWidth: 1, borderBottomColor: COLORS.border },
         headerTintColor: COLORS.text,
-        headerTitleStyle: { fontWeight: 'bold' },
+        headerTitleStyle: { fontWeight: '700', fontSize: 16 },
       })}
     >
       <Tab.Screen name="AdminDash" component={AdminDashboard} options={{ title: 'Dashboard' }} />

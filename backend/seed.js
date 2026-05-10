@@ -28,8 +28,8 @@ const seed = async () => {
     // --- Admin User ---
     const admin = await User.create({
       name: 'Admin',
-      email: 'admin@cinema.com',
-      password: 'Admin@123',
+      email: 'admin@gmail.com',
+      password: 'admin123',
       role: 'admin',
     });
     console.log('👤 Admin created:', admin.email);
@@ -132,7 +132,7 @@ const seed = async () => {
 
     console.log('\n✅ Seed complete!');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('Admin Login:          admin@cinema.com  / Admin@123');
+    console.log('Admin Login:          admin@gmail.com   / admin123');
     console.log('Predefined User:      user@gmail.com    / user123');
     console.log('Sample User:          user@cinema.com   / User@123');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
