@@ -5,15 +5,10 @@ import {
 } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 
-const COLORS = {
-  primary: '#f5a623',
-  dark: '#0d0d0d',
-  card: '#161616',
-  input: '#222222',
-  text: '#fff',
-  muted: '#888',
-  border: '#2e2e2e',
-  danger: '#E50914',
+const T = {
+  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
+  border: '#252536', primary: '#f59e0b', text: '#f1f5f9',
+  muted: '#64748b', subtle: '#94a3b8', danger: '#e50914',
 };
 
 export default function AdminLoginScreen({ navigation }) {
@@ -29,133 +24,75 @@ export default function AdminLoginScreen({ navigation }) {
     try {
       const data = await login(email.trim().toLowerCase(), password);
       if (data && data.role !== 'admin') {
-        // Not an admin — log them out and show error
         await logout();
         Alert.alert('Access Denied', 'This account does not have admin privileges.');
       }
     } catch (err) {
       Alert.alert('Login Failed', err?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
   return (
-    <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-        {/* Logo */}
-        <View style={styles.logoWrap}>
-          <Text style={styles.shieldIcon}>🛡️</Text>
-          <Text style={styles.logoText}>Admin Panel</Text>
-          <Text style={styles.tagline}>CineBook Administration</Text>
+    <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={s.container} keyboardShouldPersistTaps="handled">
+        <View style={s.hero}>
+          <View style={s.logoRing}>
+            <Text style={s.logoEmoji}>🛡️</Text>
+          </View>
+          <Text style={s.logoText}>Admin Panel</Text>
+          <View style={s.restrictedBadge}>
+            <Text style={s.restrictedText}>RESTRICTED ACCESS</Text>
+          </View>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.badgeRow}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>ADMIN ACCESS</Text>
-            </View>
+        <View style={s.card}>
+          <Text style={s.cardTitle}>Administrator Login</Text>
+          <Text style={s.cardSub}>Authorized personnel only</Text>
+
+          <View style={s.fieldWrap}>
+            <Text style={s.fieldLabel}>Admin Email</Text>
+            <TextInput style={s.input} placeholder="admin@email.com" placeholderTextColor={T.muted}
+              value={email} onChangeText={setEmail} keyboardType="email-address"
+              autoCapitalize="none" autoCorrect={false} />
           </View>
 
-          <Text style={styles.title}>Administrator Login</Text>
-          <Text style={styles.subtitle}>Restricted to authorized personnel only</Text>
+          <View style={s.fieldWrap}>
+            <Text style={s.fieldLabel}>Password</Text>
+            <TextInput style={s.input} placeholder="••••••••" placeholderTextColor={T.muted}
+              value={password} onChangeText={setPassword} secureTextEntry />
+          </View>
 
-          <Text style={styles.label}>Admin Email</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="admin@cinema.com"
-            placeholderTextColor={COLORS.muted}
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
-
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="••••••••"
-            placeholderTextColor={COLORS.muted}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-
-          <TouchableOpacity style={styles.btn} onPress={handleAdminLogin} disabled={loading}>
-            {loading
-              ? <ActivityIndicator color="#000" />
-              : <Text style={styles.btnText}>Sign In as Admin</Text>
-            }
+          <TouchableOpacity style={[s.btn, loading && s.btnDisabled]} onPress={handleAdminLogin} disabled={loading}>
+            {loading ? <ActivityIndicator color="#000" /> : <Text style={s.btnText}>Sign In as Admin</Text>}
           </TouchableOpacity>
         </View>
 
-        {/* Back to User Login */}
-        <TouchableOpacity style={styles.userLinkWrap} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.userLinkText}>👤 Regular user? <Text style={styles.userLinkBold}>User Login</Text></Text>
+        <TouchableOpacity style={s.backPill} onPress={() => navigation.navigate('Login')}>
+          <Text style={s.backPillText}>👤  User Login</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
-const styles = StyleSheet.create({
-  flex: { flex: 1, backgroundColor: COLORS.dark },
+const s = StyleSheet.create({
+  flex: { flex: 1, backgroundColor: T.bg },
   container: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  logoWrap: { alignItems: 'center', marginBottom: 36 },
-  shieldIcon: { fontSize: 64 },
-  logoText: { fontSize: 32, fontWeight: 'bold', color: COLORS.primary, letterSpacing: 2, marginTop: 8 },
-  tagline: { color: COLORS.muted, marginTop: 4, fontSize: 14 },
-  card: {
-    backgroundColor: COLORS.card,
-    borderRadius: 16,
-    padding: 24,
-    shadowColor: '#000',
-    shadowOpacity: 0.6,
-    shadowRadius: 16,
-    elevation: 10,
-    borderWidth: 1,
-    borderColor: COLORS.primary + '44',
-  },
-  badgeRow: { alignItems: 'center', marginBottom: 16 },
-  badge: {
-    backgroundColor: COLORS.primary + '22',
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 5,
-  },
-  badgeText: { color: COLORS.primary, fontWeight: 'bold', fontSize: 11, letterSpacing: 1.5 },
-  title: { fontSize: 22, fontWeight: 'bold', color: COLORS.text, marginBottom: 4, textAlign: 'center' },
-  subtitle: { color: COLORS.muted, marginBottom: 24, fontSize: 13, textAlign: 'center' },
-  label: { color: COLORS.muted, fontSize: 13, marginBottom: 6, marginTop: 12 },
-  input: {
-    backgroundColor: COLORS.input,
-    color: COLORS.text,
-    borderRadius: 10,
-    padding: 14,
-    fontSize: 15,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  btn: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 10,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 24,
-  },
-  btnText: { color: '#000', fontWeight: 'bold', fontSize: 16 },
-  userLinkWrap: {
-    marginTop: 24,
-    alignItems: 'center',
-    padding: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#2a2a2a',
-    backgroundColor: '#161616',
-  },
-  userLinkText: { color: COLORS.muted, fontSize: 14 },
-  userLinkBold: { color: '#E50914', fontWeight: 'bold' },
+  hero: { alignItems: 'center', marginBottom: 40 },
+  logoRing: { width: 90, height: 90, borderRadius: 45, backgroundColor: T.surface, borderWidth: 2, borderColor: T.primary, justifyContent: 'center', alignItems: 'center', marginBottom: 16 },
+  logoEmoji: { fontSize: 40 },
+  logoText: { fontSize: 30, fontWeight: '800', color: T.primary, letterSpacing: 2, marginBottom: 12 },
+  restrictedBadge: { backgroundColor: T.primary + '22', borderWidth: 1, borderColor: T.primary, borderRadius: 30, paddingHorizontal: 16, paddingVertical: 5 },
+  restrictedText: { color: T.primary, fontSize: 11, fontWeight: '700', letterSpacing: 2 },
+  card: { backgroundColor: T.surface, borderRadius: 24, padding: 28, borderWidth: 1, borderColor: T.border },
+  cardTitle: { fontSize: 22, fontWeight: '700', color: T.text, marginBottom: 4 },
+  cardSub: { color: T.muted, fontSize: 14, marginBottom: 28 },
+  fieldWrap: { marginBottom: 16 },
+  fieldLabel: { color: T.subtle, fontSize: 12, fontWeight: '600', letterSpacing: 0.8, marginBottom: 8, textTransform: 'uppercase' },
+  input: { backgroundColor: T.elevated, color: T.text, borderRadius: 12, padding: 16, fontSize: 15, borderWidth: 1, borderColor: T.border },
+  btn: { backgroundColor: T.primary, borderRadius: 14, padding: 17, alignItems: 'center', marginTop: 8 },
+  btnDisabled: { opacity: 0.6 },
+  btnText: { color: '#000', fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
+  backPill: { alignSelf: 'center', marginTop: 28, backgroundColor: T.surface, borderRadius: 30, paddingHorizontal: 20, paddingVertical: 12, borderWidth: 1, borderColor: T.border },
+  backPillText: { color: T.subtle, fontSize: 13, fontWeight: '600' },
 });

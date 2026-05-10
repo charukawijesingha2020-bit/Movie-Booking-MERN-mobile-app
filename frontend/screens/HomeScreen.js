@@ -6,7 +6,11 @@ import {
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
-const C = { primary: '#E50914', dark: '#141414', card: '#1a1a1a', card2: '#222', text: '#fff', muted: '#aaa', border: '#333' };
+const T = {
+  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
+  border: '#252536', primary: '#e50914', text: '#f1f5f9',
+  muted: '#64748b', subtle: '#94a3b8', gold: '#fbbf24',
+};
 
 export default function HomeScreen({ navigation }) {
   const { user, logout } = useAuth();
@@ -20,97 +24,119 @@ export default function HomeScreen({ navigation }) {
       const [c, m] = await Promise.all([api.get('/companies'), api.get('/movies')]);
       setCompanies(c.data);
       setMovies(m.data.slice(0, 6));
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
-      setRefreshing(false);
-    }
+    } catch (e) { console.log(e); }
+    finally { setLoading(false); setRefreshing(false); }
   };
 
   useEffect(() => { fetchData(); }, []);
 
-  if (loading) return <View style={styles.center}><ActivityIndicator size="large" color={C.primary} /></View>;
+  if (loading) return (
+    <View style={s.center}>
+      <ActivityIndicator size="large" color={T.primary} />
+    </View>
+  );
 
   return (
-    <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchData(); }} tintColor={C.primary} />}>
+    <ScrollView style={s.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchData(); }} tintColor={T.primary} />}>
+
       {/* Header */}
-      <View style={styles.header}>
+      <View style={s.header}>
         <View>
-          <Text style={styles.greeting}>Hello, {user?.name?.split(' ')[0]} 👋</Text>
-          <Text style={styles.subGreeting}>What are you watching today?</Text>
+          <Text style={s.greeting}>Hey, {user?.name?.split(' ')[0]} 👋</Text>
+          <Text style={s.greetingSub}>What are you watching today?</Text>
         </View>
-        <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
-          <Text style={styles.logoutText}>Logout</Text>
+        <TouchableOpacity style={s.logoutBtn} onPress={logout}>
+          <Text style={s.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Featured Banner */}
-      <View style={styles.banner}>
-        <Text style={styles.bannerTitle}>🎬 Now Showing</Text>
-        <Text style={styles.bannerSub}>Book your seats before they fill up!</Text>
+      {/* Banner */}
+      <View style={s.banner}>
+        <View style={s.bannerBadge}><Text style={s.bannerBadgeText}>NOW SHOWING</Text></View>
+        <Text style={s.bannerTitle}>Book Your Seats</Text>
+        <Text style={s.bannerSub}>Before they fill up!</Text>
       </View>
 
       {/* Featured Movies */}
-      <Text style={styles.sectionTitle}>🔥 Featured Movies</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16 }}>
+      <View style={s.sectionHeader}>
+        <Text style={s.sectionTitle}>Featured Movies</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Movies')}>
+          <Text style={s.seeAll}>See all</Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}>
         {movies.map(item => (
-          <TouchableOpacity key={item._id} style={styles.movieCard} onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
+          <TouchableOpacity key={item._id} style={s.movieCard}
+            onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
             <Image source={{ uri: item.poster || 'https://via.placeholder.com/120x180?text=No+Image' }}
-              style={styles.moviePoster} resizeMode="cover" />
-            <Text style={styles.movieTitle} numberOfLines={1}>{item.title}</Text>
-            <Text style={styles.movieMeta}>{item.genre?.[0]} • {item.duration}min</Text>
-            <View style={styles.ratingBadge}><Text style={styles.ratingText}>{item.rating}</Text></View>
+              style={s.moviePoster} resizeMode="cover" />
+            <View style={s.ratingPill}>
+              <Text style={s.ratingText}>⭐ {item.rating}</Text>
+            </View>
+            <View style={s.movieInfo}>
+              <Text style={s.movieTitle} numberOfLines={1}>{item.title}</Text>
+              <Text style={s.movieMeta} numberOfLines={1}>{item.genre?.[0]} • {item.duration}m</Text>
+            </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
 
       {/* Cinema Companies */}
-      <Text style={styles.sectionTitle}>🏢 Cinema Companies</Text>
+      <View style={s.sectionHeader}>
+        <Text style={s.sectionTitle}>Cinemas Near You</Text>
+      </View>
+
       {companies.map(company => (
-        <TouchableOpacity key={company._id} style={styles.companyCard}
+        <TouchableOpacity key={company._id} style={s.companyCard}
           onPress={() => navigation.navigate('CompanyDetail', { companyId: company._id, companyName: company.name })}>
-          <View style={styles.companyIcon}>
-            <Text style={styles.companyIconText}>{company.name.charAt(0)}</Text>
+          <View style={s.companyAvatar}>
+            <Text style={s.companyAvatarText}>{company.name.charAt(0)}</Text>
           </View>
-          <View style={styles.companyInfo}>
-            <Text style={styles.companyName}>{company.name}</Text>
-            <Text style={styles.companyAddress} numberOfLines={1}>{company.address}</Text>
-            {company.phone ? <Text style={styles.companyPhone}>{company.phone}</Text> : null}
+          <View style={s.companyInfo}>
+            <Text style={s.companyName}>{company.name}</Text>
+            <Text style={s.companyAddress} numberOfLines={1}>📍 {company.address}</Text>
+            {company.phone ? <Text style={s.companyPhone}>📞 {company.phone}</Text> : null}
           </View>
-          <Text style={styles.chevron}>›</Text>
+          <Text style={s.chevron}>›</Text>
         </TouchableOpacity>
       ))}
 
-      <View style={{ height: 20 }} />
+      <View style={{ height: 24 }} />
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: C.dark },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: C.dark },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 10 },
-  greeting: { fontSize: 22, fontWeight: 'bold', color: C.text },
-  subGreeting: { color: C.muted, fontSize: 13, marginTop: 2 },
-  logoutBtn: { backgroundColor: '#2a2a2a', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 8 },
-  logoutText: { color: C.primary, fontWeight: 'bold', fontSize: 13 },
-  banner: { marginHorizontal: 16, marginBottom: 8, backgroundColor: C.primary, borderRadius: 14, padding: 20 },
-  bannerTitle: { fontSize: 22, fontWeight: 'bold', color: '#fff' },
-  bannerSub: { color: 'rgba(255,255,255,0.8)', marginTop: 4, fontSize: 13 },
-  sectionTitle: { fontSize: 18, fontWeight: 'bold', color: C.text, marginHorizontal: 16, marginTop: 24, marginBottom: 12 },
-  movieCard: { width: 130, marginRight: 12, backgroundColor: C.card, borderRadius: 12, overflow: 'hidden' },
-  moviePoster: { width: 130, height: 180 },
-  movieTitle: { color: C.text, fontWeight: '600', fontSize: 13, padding: 8, paddingBottom: 2 },
-  movieMeta: { color: C.muted, fontSize: 11, paddingHorizontal: 8, paddingBottom: 8 },
-  ratingBadge: { position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0,0,0,0.7)', borderRadius: 6, paddingHorizontal: 6, paddingVertical: 2 },
-  ratingText: { color: '#ffd700', fontSize: 10, fontWeight: 'bold' },
-  companyCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: C.card, marginHorizontal: 16, marginBottom: 10, borderRadius: 14, padding: 14, borderWidth: 1, borderColor: C.border },
-  companyIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: C.primary, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
-  companyIconText: { color: '#fff', fontWeight: 'bold', fontSize: 20 },
+const s = StyleSheet.create({
+  container: { flex: 1, backgroundColor: T.bg },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: T.bg },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 12 },
+  greeting: { fontSize: 22, fontWeight: '800', color: T.text },
+  greetingSub: { color: T.muted, fontSize: 13, marginTop: 3 },
+  logoutBtn: { backgroundColor: T.surface, paddingHorizontal: 16, paddingVertical: 9, borderRadius: 20, borderWidth: 1, borderColor: T.border },
+  logoutText: { color: T.primary, fontWeight: '700', fontSize: 13 },
+  banner: { marginHorizontal: 16, marginBottom: 8, backgroundColor: T.primary, borderRadius: 20, padding: 24 },
+  bannerBadge: { backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4, alignSelf: 'flex-start', marginBottom: 10 },
+  bannerBadgeText: { color: '#fff', fontSize: 10, fontWeight: '700', letterSpacing: 1.5 },
+  bannerTitle: { fontSize: 24, fontWeight: '800', color: '#fff' },
+  bannerSub: { color: 'rgba(255,255,255,0.75)', marginTop: 4, fontSize: 14 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 16, marginTop: 28, marginBottom: 14 },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: T.text },
+  seeAll: { color: T.primary, fontSize: 13, fontWeight: '600' },
+  movieCard: { width: 140, backgroundColor: T.surface, borderRadius: 16, overflow: 'hidden', borderWidth: 1, borderColor: T.border },
+  moviePoster: { width: 140, height: 196 },
+  ratingPill: { position: 'absolute', top: 10, right: 10, backgroundColor: 'rgba(0,0,0,0.75)', borderRadius: 12, paddingHorizontal: 8, paddingVertical: 3 },
+  ratingText: { color: T.gold, fontSize: 11, fontWeight: '700' },
+  movieInfo: { padding: 10 },
+  movieTitle: { color: T.text, fontWeight: '700', fontSize: 13 },
+  movieMeta: { color: T.muted, fontSize: 11, marginTop: 3 },
+  companyCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: T.surface, marginHorizontal: 16, marginBottom: 10, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: T.border },
+  companyAvatar: { width: 50, height: 50, borderRadius: 25, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
+  companyAvatarText: { color: '#fff', fontWeight: '800', fontSize: 22 },
   companyInfo: { flex: 1 },
-  companyName: { color: C.text, fontWeight: 'bold', fontSize: 16 },
-  companyAddress: { color: C.muted, fontSize: 12, marginTop: 2 },
-  companyPhone: { color: C.muted, fontSize: 11, marginTop: 2 },
-  chevron: { color: C.muted, fontSize: 24 },
+  companyName: { color: T.text, fontWeight: '700', fontSize: 16 },
+  companyAddress: { color: T.muted, fontSize: 12, marginTop: 3 },
+  companyPhone: { color: T.muted, fontSize: 11, marginTop: 2 },
+  chevron: { color: T.muted, fontSize: 26, fontWeight: '300' },
 });
