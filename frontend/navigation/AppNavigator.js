@@ -17,6 +17,7 @@ import MovieDetailScreen from '../screens/movies/MovieDetailScreen';
 import CompanyDetailScreen from '../screens/companies/CompanyDetailScreen';
 import HallDetailScreen from '../screens/halls/HallDetailScreen';
 import SeatSelectionScreen from '../screens/booking/SeatSelectionScreen';
+import PaymentScreen from '../screens/booking/PaymentScreen';
 import BookingConfirmScreen from '../screens/booking/BookingConfirmScreen';
 import MyBookingsScreen from '../screens/booking/MyBookingsScreen';
 
@@ -136,6 +137,8 @@ export default function AppNavigator() {
         options={{ headerShown: true, title: 'Hall Screenings', headerStyle: { backgroundColor: COLORS.dark }, headerTintColor: COLORS.text }} />
       <Stack.Screen name="SeatSelection" component={SeatSelectionScreen}
         options={{ headerShown: true, title: 'Select Seats', headerStyle: { backgroundColor: COLORS.dark }, headerTintColor: COLORS.text }} />
+      <Stack.Screen name="Payment" component={PaymentScreen}
+        options={{ headerShown: true, title: 'Payment', headerStyle: { backgroundColor: COLORS.dark }, headerTintColor: COLORS.text }} />
       <Stack.Screen name="BookingConfirm" component={BookingConfirmScreen}
         options={{ headerShown: true, title: 'Booking Confirmed', headerStyle: { backgroundColor: COLORS.dark }, headerTintColor: COLORS.text }} />
       <Stack.Screen name="WriteFeedback" component={WriteFeedbackScreen}
