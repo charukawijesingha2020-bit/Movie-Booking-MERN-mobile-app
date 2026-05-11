@@ -4,7 +4,7 @@ const Screening = require('../model/Screening');
 // @route POST /api/bookings  [User]
 const createBooking = async (req, res) => {
   try {
-    const { screeningId, seats } = req.body;
+    const { screeningId, seats, paymentRef, paymentMethod, cardLast4 } = req.body;
     if (!screeningId || !seats || seats.length === 0)
       return res.status(400).json({ message: 'Screening and seats are required' });
 
@@ -26,6 +26,9 @@ const createBooking = async (req, res) => {
       screening: screeningId,
       seats,
       totalPrice,
+      paymentRef,
+      paymentMethod: paymentMethod || 'card',
+      cardLast4,
     });
 
     const populated = await Booking.findById(booking._id)
