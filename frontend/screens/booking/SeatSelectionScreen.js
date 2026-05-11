@@ -12,7 +12,6 @@ export default function SeatSelectionScreen({ route, navigation }) {
   const [screening, setScreening] = useState(null);
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [booking, setBooking] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -39,15 +38,21 @@ export default function SeatSelectionScreen({ route, navigation }) {
     );
   };
 
-  const handleBooking = async () => {
+  const handleBooking = () => {
     if (selectedSeats.length === 0) return Alert.alert('No seats', 'Please select at least one seat');
-    setBooking(true);
-    try {
-      const { data } = await api.post('/bookings', { screeningId, seats: selectedSeats });
-      navigation.replace('BookingConfirm', { booking: data });
-    } catch (err) {
-      Alert.alert('Booking Failed', err?.response?.data?.message || 'Something went wrong');
-    } finally { setBooking(false); }
+    navigation.navigate('Payment', {
+      screeningId,
+      seats: selectedSeats,
+      totalPrice,
+      screeningInfo: {
+        movieTitle: screening?.movie?.title,
+        cinema: screening?.hall?.company?.name,
+        hall: screening?.hall?.name,
+        date: screening?.date,
+        showtime: screening?.showtime,
+        ticketPrice: screening?.ticketPrice,
+      },
+    });
   };
 
   if (loading) return <View style={s.center}><ActivityIndicator size="large" color={COLORS.primary} /></View>;
@@ -108,8 +113,8 @@ export default function SeatSelectionScreen({ route, navigation }) {
           <Text style={s.seatsInfo}>{selectedSeats.length} seat(s): {selectedSeats.join(', ') || '—'}</Text>
           <Text style={s.totalPrice}>Total: Rs. {totalPrice}</Text>
         </View>
-        <TouchableOpacity style={[s.bookBtn, booking && { opacity: 0.6 }]} onPress={handleBooking} disabled={booking}>
-          {booking ? <ActivityIndicator color="#fff" size="small" /> : <Text style={s.bookBtnText}>Confirm Booking</Text>}
+        <TouchableOpacity style={s.bookBtn} onPress={handleBooking}>
+          <Text style={s.bookBtnText}>Proceed to Payment</Text>
         </TouchableOpacity>
       </View>
     </View>
