@@ -10,7 +10,10 @@ const bookingSchema = new mongoose.Schema({
     enum: ['confirmed', 'cancelled'],
     default: 'confirmed',
   },
-  bookingRef: { type: String, unique: true },      // auto-generated reference
+  bookingRef: { type: String, unique: true },
+  paymentRef: { type: String },
+  paymentMethod: { type: String, default: 'card' },
+  cardLast4: { type: String },
 }, { timestamps: true });
 
 // Auto-generate booking reference before save
