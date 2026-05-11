@@ -50,6 +50,8 @@ export default function BookingConfirmScreen({ route, navigation }) {
           <Row label="Seats" value={booking?.seats?.join(', ')} highlight />
           <Row label="Total Paid" value={`Rs. ${booking?.totalPrice}`} highlight />
           <Row label="Status" value={booking?.status?.toUpperCase()} />
+          {booking?.paymentRef ? <Row label="Payment Ref" value={booking.paymentRef} /> : null}
+          {booking?.cardLast4 ? <Row label="Card" value={`•••• •••• •••• ${booking.cardLast4}`} /> : null}
         </View>
       </View>
 
