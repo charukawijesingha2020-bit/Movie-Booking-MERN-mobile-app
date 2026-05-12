@@ -8,6 +8,7 @@ export default function CompanyDetailScreen({ route, navigation }) {
   const [halls, setHalls] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const fetch = async () => {
       try {
