@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import {
+  View, Text, StyleSheet, FlatList, TouchableOpacity,
+  ActivityIndicator, Alert, Image,
+} from 'react-native';
 import api from '../../services/api';
 
 export default function HallDetailScreen({ route, navigation }) {
@@ -45,22 +48,49 @@ export default function HallDetailScreen({ route, navigation }) {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
         ListEmptyComponent={<Text style={s.empty}>No screenings scheduled in this hall.</Text>}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={s.card}
-            onPress={() => navigation.navigate('SeatSelection', { screeningId: item._id })}
-          >
-            <View style={s.movieInfo}>
-              <Text style={s.movieTitle}>{item.movie?.title}</Text>
-              <Text style={s.genre}>{item.movie?.genre?.join(', ')} • {item.movie?.duration} min</Text>
-              <Text style={s.dateTime}>📅 {item.date}   🕐 {item.showtime}</Text>
+          <View style={s.card}>
+            {/* Movie info row — tapping navigates to full movie details */}
+            <TouchableOpacity
+              style={s.movieRow}
+              activeOpacity={0.75}
+              onPress={() => navigation.navigate('MovieDetail', { movieId: item.movie?._id })}
+            >
+              {item.movie?.poster ? (
+                <Image source={{ uri: item.movie.poster }} style={s.poster} resizeMode="cover" />
+              ) : (
+                <View style={[s.poster, s.posterFallback]}>
+                  <Text style={s.posterFallbackText}>🎬</Text>
+                </View>
+              )}
+              <View style={s.movieInfo}>
+                <Text style={s.movieTitle} numberOfLines={2}>{item.movie?.title}</Text>
+                <Text style={s.genre} numberOfLines={1}>{item.movie?.genre?.join(', ')}</Text>
+                <Text style={s.meta}>{item.movie?.duration} min  •  {item.movie?.rating}</Text>
+                <View style={s.detailsLink}>
+                  <Text style={s.detailsLinkText}>View Details  →</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+
+            {/* Screening info row */}
+            <View style={s.screeningRow}>
+              <View style={s.dateTimeBlock}>
+                <Text style={s.dateTime}>📅  {item.date}</Text>
+                <Text style={s.dateTime}>🕐  {item.showtime}</Text>
+                <Text style={s.booked}>{item.bookedSeats?.length || 0} seats booked</Text>
+              </View>
+              <View style={s.priceBlock}>
+                <Text style={s.price}>Rs. {item.ticketPrice}</Text>
+                <Text style={s.perSeat}>per seat</Text>
+                <TouchableOpacity
+                  style={s.bookBtn}
+                  onPress={() => navigation.navigate('SeatSelection', { screeningId: item._id })}
+                >
+                  <Text style={s.bookBtnText}>Select Seats</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={s.right}>
-              <Text style={s.price}>Rs. {item.ticketPrice}</Text>
-              <Text style={s.perSeat}>per seat</Text>
-              <Text style={s.booked}>{item.bookedSeats?.length || 0} booked</Text>
-              <View style={s.bookBtn}><Text style={s.bookBtnText}>Select</Text></View>
-            </View>
-          </TouchableOpacity>
+          </View>
         )}
       />
     </View>
@@ -70,6 +100,7 @@ export default function HallDetailScreen({ route, navigation }) {
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#141414' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
+
   header: { backgroundColor: '#1a1a1a', padding: 20, borderBottomWidth: 1, borderBottomColor: '#333' },
   hallName: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   companyName: { color: '#aaa', fontSize: 14, marginTop: 2, marginBottom: 14 },
@@ -77,17 +108,65 @@ const s = StyleSheet.create({
   stat: { backgroundColor: '#2a2a2a', borderRadius: 10, padding: 12, alignItems: 'center', flex: 1 },
   statNum: { color: '#E50914', fontSize: 22, fontWeight: 'bold' },
   statLabel: { color: '#aaa', fontSize: 11, marginTop: 2 },
+
   sectionTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', padding: 16 },
   empty: { color: '#aaa', textAlign: 'center', marginTop: 40, fontSize: 15 },
-  card: { backgroundColor: '#1a1a1a', borderRadius: 12, padding: 16, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderWidth: 1, borderColor: '#333' },
-  movieInfo: { flex: 1 },
-  movieTitle: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
-  genre: { color: '#aaa', fontSize: 12, marginTop: 3 },
-  dateTime: { color: '#888', fontSize: 12, marginTop: 6 },
-  right: { alignItems: 'center', minWidth: 80 },
-  price: { color: '#E50914', fontWeight: 'bold', fontSize: 17 },
-  perSeat: { color: '#aaa', fontSize: 10 },
-  booked: { color: '#888', fontSize: 10, marginTop: 3 },
-  bookBtn: { backgroundColor: '#E50914', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 6, marginTop: 8 },
+
+  card: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 14,
+    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#2a2a2a',
+    overflow: 'hidden',
+  },
+
+  /* Movie section */
+  movieRow: {
+    flexDirection: 'row',
+    padding: 12,
+    gap: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#2a2a2a',
+  },
+  poster: {
+    width: 80,
+    height: 112,
+    borderRadius: 8,
+    backgroundColor: '#2a2a2a',
+  },
+  posterFallback: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  posterFallbackText: { fontSize: 28 },
+  movieInfo: { flex: 1, justifyContent: 'center', gap: 4 },
+  movieTitle: { color: '#fff', fontWeight: 'bold', fontSize: 16, lineHeight: 21 },
+  genre: { color: '#aaa', fontSize: 12 },
+  meta: { color: '#888', fontSize: 12 },
+  detailsLink: { marginTop: 6 },
+  detailsLinkText: { color: '#E50914', fontSize: 12, fontWeight: '600' },
+
+  /* Screening row */
+  screeningRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  dateTimeBlock: { gap: 3 },
+  dateTime: { color: '#ccc', fontSize: 13 },
+  booked: { color: '#666', fontSize: 11, marginTop: 4 },
+  priceBlock: { alignItems: 'flex-end', gap: 2 },
+  price: { color: '#E50914', fontWeight: 'bold', fontSize: 18 },
+  perSeat: { color: '#888', fontSize: 10 },
+  bookBtn: {
+    backgroundColor: '#E50914',
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 7,
+    marginTop: 6,
+  },
   bookBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
 });
