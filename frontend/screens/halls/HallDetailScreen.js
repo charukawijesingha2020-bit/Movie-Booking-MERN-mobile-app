@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
-  ActivityIndicator, Alert, Image,
+  ActivityIndicator, Alert, Image, ScrollView,
 } from 'react-native';
 import api from '../../services/api';
 
@@ -30,6 +30,10 @@ export default function HallDetailScreen({ route, navigation }) {
 
   return (
     <View style={s.container}>
+      {hall?.image ? (
+        <Image source={{ uri: hall.image }} style={s.hallBanner} resizeMode="cover" />
+      ) : null}
+
       <View style={s.header}>
         <Text style={s.hallName}>{hall?.name}</Text>
         <Text style={s.companyName}>{hall?.company?.name}</Text>
@@ -101,6 +105,7 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#141414' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
 
+  hallBanner: { width: '100%', height: 180, backgroundColor: '#2a2a2a' },
   header: { backgroundColor: '#1a1a1a', padding: 20, borderBottomWidth: 1, borderBottomColor: '#333' },
   hallName: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   companyName: { color: '#aaa', fontSize: 14, marginTop: 2, marginBottom: 14 },

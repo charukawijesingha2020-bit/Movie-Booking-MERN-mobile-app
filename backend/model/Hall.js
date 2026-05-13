@@ -6,6 +6,7 @@ const hallSchema = new mongoose.Schema({
   rows: { type: Number, required: true, min: 1 },         // e.g. 8
   seatsPerRow: { type: Number, required: true, min: 1 },  // e.g. 10
   description: { type: String },
+  image: { type: String },
 }, { timestamps: true });
 
 // Virtual: total seats
