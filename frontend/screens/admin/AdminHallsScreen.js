@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator,
-  Alert, Modal, TextInput, ScrollView, RefreshControl,
+  Alert, Modal, TextInput, ScrollView, RefreshControl, Image,
 } from 'react-native';
 import api from '../../services/api';
 
-const EMPTY = { name: '', company: '', rows: '', seatsPerRow: '', description: '' };
+const EMPTY = { name: '', company: '', rows: '', seatsPerRow: '', description: '', image: '' };
 
 export default function AdminHallsScreen() {
   const [halls, setHalls] = useState([]);
@@ -38,6 +38,7 @@ export default function AdminHallsScreen() {
       rows: String(hall.rows),
       seatsPerRow: String(hall.seatsPerRow),
       description: hall.description || '',
+      image: hall.image || '',
     });
     setModalVisible(true);
   };
@@ -47,7 +48,7 @@ export default function AdminHallsScreen() {
       return Alert.alert('Validation', 'Name, company, rows and seats per row are required');
     setSaving(true);
     try {
-      const payload = { name: form.name.trim(), company: form.company, rows: parseInt(form.rows), seatsPerRow: parseInt(form.seatsPerRow), description: form.description };
+      const payload = { name: form.name.trim(), company: form.company, rows: parseInt(form.rows), seatsPerRow: parseInt(form.seatsPerRow), description: form.description, image: form.image.trim() || undefined };
       if (editing) await api.put(`/halls/${editing}`, payload);
       else await api.post('/halls', payload);
       setModalVisible(false);
@@ -85,6 +86,13 @@ export default function AdminHallsScreen() {
         ListEmptyComponent={<Text style={s.empty}>No halls yet.</Text>}
         renderItem={({ item }) => (
           <View style={s.card}>
+            {item.image ? (
+              <Image source={{ uri: item.image }} style={s.cardThumb} resizeMode="cover" />
+            ) : (
+              <View style={[s.cardThumb, s.cardThumbFallback]}>
+                <Text style={{ fontSize: 20 }}>🎭</Text>
+              </View>
+            )}
             <View style={s.cardBody}>
               <Text style={s.cardTitle}>{item.name}</Text>
               <Text style={s.cardCompany}>{item.company?.name}</Text>
@@ -128,6 +136,14 @@ export default function AdminHallsScreen() {
               <Text style={s.mLabel}>Description</Text>
               <TextInput style={[s.mInput, { height: 60 }]} placeholder="Optional description..." placeholderTextColor="#555"
                 value={form.description} onChangeText={v => setForm(p => ({ ...p, description: v }))} multiline textAlignVertical="top" />
+
+              <Text style={s.mLabel}>Hall Image URL</Text>
+              <TextInput style={s.mInput} placeholder="https://..." placeholderTextColor="#555"
+                value={form.image} onChangeText={v => setForm(p => ({ ...p, image: v }))}
+                autoCapitalize="none" keyboardType="url" />
+              {form.image ? (
+                <Image source={{ uri: form.image }} style={s.imagePreview} resizeMode="cover" />
+              ) : null}
 
               {form.rows && form.seatsPerRow ? (
                 <Text style={s.totalSeats}>Total Seats: {parseInt(form.rows || 0) * parseInt(form.seatsPerRow || 0)}</Text>
@@ -176,8 +192,11 @@ const s = StyleSheet.create({
   addBtn: { backgroundColor: '#E50914', margin: 12, borderRadius: 10, padding: 14, alignItems: 'center' },
   addBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
   empty: { color: '#aaa', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#1a1a1a', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#2a2a2a' },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#1a1a1a', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#2a2a2a', gap: 12 },
+  cardThumb: { width: 52, height: 52, borderRadius: 8 },
+  cardThumbFallback: { backgroundColor: '#2a2a2a', justifyContent: 'center', alignItems: 'center' },
   cardBody: { flex: 1 },
+  imagePreview: { width: '100%', height: 140, borderRadius: 10, marginTop: 10, backgroundColor: '#2a2a2a' },
   cardTitle: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
   cardCompany: { color: '#aaa', fontSize: 12, marginTop: 2 },
   cardMeta: { color: '#888', fontSize: 12, marginTop: 3 },
