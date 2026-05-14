@@ -6,6 +6,8 @@ const protect = async (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
     try {
+      // Token is stored in DB (not JWT), so we verify by DB lookup instead of signature check.
+      // Stripping password and authToken from the attached user prevents accidental leaks downstream.
       const user = await User.findOne({ authToken: token }).select('-password -authToken');
       if (!user) return res.status(401).json({ message: 'Not authorized, token failed' });
       req.user = user;
