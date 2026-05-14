@@ -34,10 +34,10 @@ const getHallById = async (req, res) => {
 // @route POST /api/halls  [Admin]
 const createHall = async (req, res) => {
   try {
-    const { name, company, rows, seatsPerRow, description } = req.body;
+    const { name, company, rows, seatsPerRow, description, image } = req.body;
     if (!name || !company || !rows || !seatsPerRow)
       return res.status(400).json({ message: 'Name, company, rows, and seatsPerRow are required' });
-    const hall = await Hall.create({ name, company, rows, seatsPerRow, description });
+    const hall = await Hall.create({ name, company, rows, seatsPerRow, description, image });
     const populated = await Hall.findById(hall._id).populate('company', 'name');
     res.status(201).json(populated);
   } catch (error) {

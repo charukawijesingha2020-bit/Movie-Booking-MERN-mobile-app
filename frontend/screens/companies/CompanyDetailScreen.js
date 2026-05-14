@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, Alert, Image } from 'react-native';
 import api from '../../services/api';
 
 export default function CompanyDetailScreen({ route, navigation }) {
@@ -49,7 +49,11 @@ export default function CompanyDetailScreen({ route, navigation }) {
             style={s.hallCard}
             onPress={() => navigation.navigate('HallDetail', { hallId: item._id, hallName: item.name })}
           >
-            <View style={s.hallIcon}><Text style={s.hallIconText}>🎭</Text></View>
+            {item.image ? (
+              <Image source={{ uri: item.image }} style={s.hallThumb} resizeMode="cover" />
+            ) : (
+              <View style={s.hallIcon}><Text style={s.hallIconText}>🎭</Text></View>
+            )}
             <View style={s.hallInfo}>
               <Text style={s.hallName}>{item.name}</Text>
               <Text style={s.hallMeta}>{item.rows} rows × {item.seatsPerRow} seats = {item.rows * item.seatsPerRow} total</Text>
@@ -76,7 +80,8 @@ const s = StyleSheet.create({
   sectionTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', paddingHorizontal: 16, paddingVertical: 14 },
   empty: { color: '#aaa', textAlign: 'center', marginTop: 40 },
   hallCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#1a1a1a', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#333' },
-  hallIcon: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#2a2a2a', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  hallThumb: { width: 56, height: 56, borderRadius: 10, marginRight: 12, backgroundColor: '#2a2a2a' },
+  hallIcon: { width: 56, height: 56, borderRadius: 10, backgroundColor: '#2a2a2a', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   hallIconText: { fontSize: 22 },
   hallInfo: { flex: 1 },
   hallName: { color: '#fff', fontWeight: 'bold', fontSize: 16 },

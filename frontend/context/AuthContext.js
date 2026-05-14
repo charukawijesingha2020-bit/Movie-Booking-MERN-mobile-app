@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // Restore persisted session once on mount before rendering any navigation.
   useEffect(() => {
     loadStoredAuth();
   }, []);
@@ -20,11 +21,13 @@ export const AuthProvider = ({ children }) => {
       if (storedToken && storedUser) {
         setToken(storedToken);
         setUser(JSON.parse(storedUser));
+        // Attach token to every subsequent axios request for the session lifetime.
         api.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
       }
     } catch (error) {
       console.log('Failed to load auth:', error);
     } finally {
+      // Clear loading so AppNavigator stops blocking on the splash screen.
       setLoading(false);
     }
   };
@@ -34,6 +37,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await api.post('/auth/login', { email, password });
       await AsyncStorage.setItem('token', data.token);
       await AsyncStorage.setItem('user', JSON.stringify(data));
+      // Mirror the new token into the axios default so subsequent calls don't need to pass it manually.
       api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       setToken(data.token);
       setUser(data);

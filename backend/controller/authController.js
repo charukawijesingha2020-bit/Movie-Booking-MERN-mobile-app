@@ -12,6 +12,7 @@ const registerUser = async (req, res) => {
     const exists = await User.findOne({ email });
     if (exists) return res.status(400).json({ message: 'User already exists' });
 
+    // 32 random bytes → 64-char hex token used as the bearer credential (no JWT).
     const token = crypto.randomBytes(32).toString('hex');
     const user = await User.create({ name, email, password, authToken: token });
     res.status(201).json({
@@ -35,6 +36,7 @@ const loginUser = async (req, res) => {
     if (!user || !(await user.matchPassword(password)))
       return res.status(401).json({ message: 'Invalid email or password' });
 
+    // Rotate the token on every login so previous sessions are invalidated.
     const token = crypto.randomBytes(32).toString('hex');
     user.authToken = token;
     await user.save();
