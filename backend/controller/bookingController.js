@@ -13,12 +13,13 @@ const createBooking = async (req, res) => {
     const screening = await Screening.findById(screeningId);
     if (!screening) return res.status(404).json({ message: 'Screening not found' });
 
-    // Check seat conflicts
+    // Guard against race conditions: re-check seat availability against the latest DB state.
     const conflicts = seats.filter(s => screening.bookedSeats.includes(s));
     if (conflicts.length > 0)
       return res.status(400).json({ message: `Seats already booked: ${conflicts.join(', ')}` });
 
-    // Reserve seats
+    // Lock seats immediately before creating the booking record so a concurrent
+    // request for the same seats fails the conflict check above.
     screening.bookedSeats.push(...seats);
     await screening.save();
 
@@ -77,7 +78,7 @@ const cancelBooking = async (req, res) => {
     if (booking.status === 'cancelled')
       return res.status(400).json({ message: 'Booking already cancelled' });
 
-    // Release seats
+    // Free the seats so they become available to other buyers.
     const screening = await Screening.findById(booking.screening);
     if (screening) {
       screening.bookedSeats = screening.bookedSeats.filter(s => !booking.seats.includes(s));
