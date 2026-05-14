@@ -26,6 +26,7 @@ export default function SeatSelectionScreen({ route, navigation }) {
 
   const rows = screening?.hall?.rows || 0;
   const seatsPerRow = screening?.hall?.seatsPerRow || 0;
+  // Derive row letters (A, B, C…) from the hall's row count.
   const rowLabels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.slice(0, rows);
 
   const isBooked = (seatId) => screening?.bookedSeats?.includes(seatId);
@@ -80,6 +81,7 @@ export default function SeatSelectionScreen({ route, navigation }) {
           <View key={rowLabel} style={s.row}>
             <Text style={s.rowLabel}>{rowLabel}</Text>
             {Array.from({ length: seatsPerRow }, (_, i) => {
+              // Seat IDs follow the pattern "A1", "B3", etc. matching the backend bookedSeats format.
               const seatId = `${rowLabel}${i + 1}`;
               const booked = isBooked(seatId);
               const selected = isSelected(seatId);
