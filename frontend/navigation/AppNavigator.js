@@ -110,6 +110,7 @@ function AdminTabs() {
 export default function AppNavigator() {
   const { user, loading } = useAuth();
 
+  // Block navigation until AsyncStorage has been read; prevents a flash of the auth screen.
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: COLORS.dark }}>
@@ -123,6 +124,7 @@ export default function AppNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {/* Route to different tab sets based on the user's role. */}
       {user.role === 'admin' ? (
         <Stack.Screen name="AdminMain" component={AdminTabs} />
       ) : (
