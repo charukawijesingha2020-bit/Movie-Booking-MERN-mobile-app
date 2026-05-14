@@ -82,6 +82,7 @@ export default function FeedbacksScreen({ navigation }) {
 
 
 
+
       {selectedMovie && (
         <View style={s.statsBar}>
           <View style={s.statsLeft}>
