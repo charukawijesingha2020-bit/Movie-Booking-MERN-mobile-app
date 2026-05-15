@@ -9,6 +9,7 @@ const reviewSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
+
 // One review per user per movie
 reviewSchema.index({ user: 1, movie: 1 }, { unique: true });
 
