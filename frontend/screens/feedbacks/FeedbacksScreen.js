@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
-  ActivityIndicator, Alert, RefreshControl,
+  ActivityIndicator, RefreshControl,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 
 const T = {
@@ -11,10 +12,10 @@ const T = {
   muted: '#64748b', subtle: '#94a3b8', gold: '#fbbf24',
 };
 
-const Stars = ({ rating }) => (
+const Stars = ({ rating, size = 13 }) => (
   <View style={{ flexDirection: 'row', gap: 2 }}>
     {[1, 2, 3, 4, 5].map(i => (
-      <Text key={i} style={{ fontSize: 13, color: i <= rating ? T.gold : T.border }}>★</Text>
+      <Ionicons key={i} name={i <= rating ? 'star' : 'star-outline'} size={size} color={i <= rating ? T.gold : T.border} />
     ))}
   </View>
 );
@@ -59,8 +60,15 @@ export default function FeedbacksScreen({ navigation }) {
     ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
     : null;
 
+  const ratingDist = [5, 4, 3, 2, 1].map(star => ({
+    star,
+    count: reviews.filter(r => r.rating === star).length,
+    pct: reviews.length > 0 ? reviews.filter(r => r.rating === star).length / reviews.length : 0,
+  }));
+
   return (
     <View style={s.container}>
+      {/* Movie selector */}
       <FlatList
         horizontal
         data={movies}
@@ -70,42 +78,61 @@ export default function FeedbacksScreen({ navigation }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[s.moviePill, selectedMovie?._id === item._id && s.moviePillActive]}
-            onPress={() => selectMovie(item)}>
-            <Text style={[s.moviePillText, selectedMovie?._id === item._id && s.moviePillTextActive]}
-              numberOfLines={1}>{item.title}</Text>
+            onPress={() => selectMovie(item)}
+          >
+            <Text
+              style={[s.moviePillText, selectedMovie?._id === item._id && s.moviePillTextActive]}
+              numberOfLines={1}
+            >
+              {item.title}
+            </Text>
           </TouchableOpacity>
         )}
       />
 
-
-
-
-
-
-
+      {/* Stats bar */}
       {selectedMovie && (
         <View style={s.statsBar}>
           <View style={s.statsLeft}>
             <Text style={s.statsMovieName} numberOfLines={1}>{selectedMovie.title}</Text>
             {avgRating ? (
-              <View style={s.statsRating}>
-                <Text style={s.avgRatingNum}>{avgRating}</Text>
-                <View>
+              <View style={s.statsRatingRow}>
+                <Text style={s.avgNum}>{avgRating}</Text>
+                <View style={s.statsRatingRight}>
                   <Stars rating={Math.round(avgRating)} />
-                  <Text style={s.reviewCount}>{reviews.length} reviews</Text>
+                  <Text style={s.reviewCount}>{reviews.length} review{reviews.length !== 1 ? 's' : ''}</Text>
                 </View>
               </View>
             ) : (
               <Text style={s.noRatings}>No reviews yet — be first!</Text>
             )}
           </View>
-          <TouchableOpacity style={s.writeBtn}
-            onPress={() => navigation.navigate('WriteFeedback', { movieId: selectedMovie._id, movieTitle: selectedMovie.title })}>
-            <Text style={s.writeBtnText}>✍️ Review</Text>
+
+          {/* Rating distribution mini-bars */}
+          {avgRating && (
+            <View style={s.distCol}>
+              {ratingDist.map(({ star, pct }) => (
+                <View key={star} style={s.distRow}>
+                  <Text style={s.distStar}>{star}</Text>
+                  <View style={s.distBarBg}>
+                    <View style={[s.distBarFill, { width: `${pct * 100}%` }]} />
+                  </View>
+                </View>
+              ))}
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={s.writeBtn}
+            onPress={() => navigation.navigate('WriteFeedback', { movieId: selectedMovie._id, movieTitle: selectedMovie.title })}
+          >
+            <Ionicons name="create-outline" size={16} color="#fff" />
+            <Text style={s.writeBtnText}>Review</Text>
           </TouchableOpacity>
         </View>
       )}
 
+      {/* Reviews list */}
       <FlatList
         style={{ flex: 1 }}
         data={reviews}
@@ -114,7 +141,7 @@ export default function FeedbacksScreen({ navigation }) {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchMovies(); }} tintColor={T.primary} />}
         ListEmptyComponent={
           <View style={s.emptyWrap}>
-            <Text style={s.emptyIcon}>⭐</Text>
+            <Ionicons name="star-outline" size={48} color={T.border} style={{ marginBottom: 12 }} />
             <Text style={s.emptyTitle}>No reviews yet</Text>
             <Text style={s.emptySub}>Be the first to leave a review!</Text>
           </View>
@@ -129,12 +156,18 @@ export default function FeedbacksScreen({ navigation }) {
                 <Text style={s.reviewerName}>{item.user?.name}</Text>
                 <Stars rating={item.rating} />
               </View>
-              <Text style={s.reviewDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+              <View style={s.dateBadge}>
+                <Ionicons name="calendar-outline" size={11} color={T.muted} />
+                <Text style={s.reviewDate}>{new Date(item.createdAt).toLocaleDateString()}</Text>
+              </View>
             </View>
             <Text style={s.reviewComment}>{item.comment}</Text>
             {item.adminReply ? (
               <View style={s.adminReply}>
-                <Text style={s.adminReplyLabel}>🎬 Cinema replied:</Text>
+                <View style={s.adminReplyHeader}>
+                  <Ionicons name="film-outline" size={13} color={T.primary} />
+                  <Text style={s.adminReplyLabel}>Cinema replied</Text>
+                </View>
                 <Text style={s.adminReplyText}>{item.adminReply}</Text>
               </View>
             ) : null}
@@ -148,32 +181,46 @@ export default function FeedbacksScreen({ navigation }) {
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: T.bg },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: T.bg },
+
   moviePill: { backgroundColor: T.surface, borderRadius: 20, paddingHorizontal: 16, paddingVertical: 9, maxWidth: 160, borderWidth: 1, borderColor: T.border },
   moviePillActive: { backgroundColor: T.primary, borderColor: T.primary },
   moviePillText: { color: T.muted, fontSize: 13, fontWeight: '600' },
   moviePillTextActive: { color: '#fff', fontWeight: '700' },
-  statsBar: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: T.surface, padding: 16, borderTopWidth: 1, borderBottomWidth: 1, borderColor: T.border },
-  statsLeft: { flex: 1, marginRight: 12 },
-  statsMovieName: { color: T.text, fontWeight: '700', fontSize: 16, marginBottom: 8 },
-  statsRating: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  avgRatingNum: { color: T.gold, fontWeight: '800', fontSize: 28 },
-  reviewCount: { color: T.muted, fontSize: 12, marginTop: 2 },
+
+  statsBar: { flexDirection: 'row', alignItems: 'center', backgroundColor: T.surface, padding: 16, borderTopWidth: 1, borderBottomWidth: 1, borderColor: T.border, gap: 12 },
+  statsLeft: { flex: 1 },
+  statsMovieName: { color: T.text, fontWeight: '700', fontSize: 15, marginBottom: 8 },
+  statsRatingRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  avgNum: { color: T.gold, fontWeight: '800', fontSize: 28 },
+  statsRatingRight: { gap: 3 },
+  reviewCount: { color: T.muted, fontSize: 12 },
   noRatings: { color: T.muted, fontSize: 13 },
-  writeBtn: { backgroundColor: T.primary, borderRadius: 12, paddingHorizontal: 14, paddingVertical: 10 },
+
+  distCol: { width: 80, gap: 3 },
+  distRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  distStar: { color: T.muted, fontSize: 9, width: 8 },
+  distBarBg: { flex: 1, height: 4, backgroundColor: T.border, borderRadius: 2, overflow: 'hidden' },
+  distBarFill: { height: '100%', backgroundColor: T.gold, borderRadius: 2 },
+
+  writeBtn: { flexDirection: 'row', alignItems: 'center', gap: 5, backgroundColor: T.primary, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 10 },
   writeBtnText: { color: '#fff', fontWeight: '700', fontSize: 13 },
+
   emptyWrap: { alignItems: 'center', marginTop: 60 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
   emptyTitle: { color: T.text, fontWeight: '700', fontSize: 16 },
   emptySub: { color: T.muted, fontSize: 13, marginTop: 6 },
+
   reviewCard: { backgroundColor: T.surface, borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: T.border },
   reviewHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
   avatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   avatarText: { color: '#fff', fontWeight: '800', fontSize: 17 },
   reviewerInfo: { flex: 1, gap: 4 },
   reviewerName: { color: T.text, fontWeight: '700', fontSize: 14 },
+  dateBadge: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   reviewDate: { color: T.muted, fontSize: 11 },
   reviewComment: { color: T.subtle, fontSize: 14, lineHeight: 22 },
+
   adminReply: { backgroundColor: T.elevated, borderRadius: 10, padding: 12, marginTop: 12, borderLeftWidth: 3, borderLeftColor: T.primary },
-  adminReplyLabel: { color: T.primary, fontWeight: '700', fontSize: 12, marginBottom: 4 },
+  adminReplyHeader: { flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 5 },
+  adminReplyLabel: { color: T.primary, fontWeight: '700', fontSize: 12 },
   adminReplyText: { color: T.subtle, fontSize: 13 },
 });
