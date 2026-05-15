@@ -6,6 +6,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 
+
 const T = {
   bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
   border: '#252536', primary: '#e50914', text: '#f1f5f9',
