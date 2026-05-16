@@ -22,10 +22,13 @@ const DetailBox = ({ icon, label, value }) => (
   </View>
 );
 
+const TABS = ['All', 'Active', 'Cancelled'];
+
 export default function MyBookingsScreen({ navigation }) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState('All');
 
   const fetchBookings = useCallback(async () => {
     try {
@@ -57,6 +60,12 @@ export default function MyBookingsScreen({ navigation }) {
 
   const active = bookings.filter(b => b.status !== 'cancelled').length;
 
+  const filtered = bookings.filter(b => {
+    if (activeTab === 'Active') return b.status !== 'cancelled';
+    if (activeTab === 'Cancelled') return b.status === 'cancelled';
+    return true;
+  });
+
   return (
     <View style={s.container}>
       {bookings.length > 0 && (
@@ -78,8 +87,26 @@ export default function MyBookingsScreen({ navigation }) {
         </View>
       )}
 
+      <View style={s.tabBar}>
+        {TABS.map(tab => (
+          <TouchableOpacity
+            key={tab}
+            style={[s.tabItem, activeTab === tab && s.tabItemActive]}
+            onPress={() => setActiveTab(tab)}
+          >
+            <Text style={[s.tabText, activeTab === tab && s.tabTextActive]}>{tab}</Text>
+            {tab === 'Active' && (
+              <View style={s.tabBadge}><Text style={s.tabBadgeText}>{active}</Text></View>
+            )}
+            {tab === 'Cancelled' && bookings.length - active > 0 && (
+              <View style={[s.tabBadge, s.tabBadgeCancelled]}><Text style={s.tabBadgeText}>{bookings.length - active}</Text></View>
+            )}
+          </TouchableOpacity>
+        ))}
+      </View>
+
       <FlatList
-        data={bookings}
+        data={filtered}
         keyExtractor={item => item._id}
         contentContainerStyle={{ padding: 16, paddingBottom: 30 }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchBookings(); }} tintColor={T.primary} />}
