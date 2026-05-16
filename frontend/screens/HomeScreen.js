@@ -20,6 +20,7 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
+
   const fetchData = async () => {
     try {
       const [c, m] = await Promise.all([api.get('/companies'), api.get('/movies')]);
@@ -60,6 +61,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={s.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
+
 
       {/* Banner */}
       <View style={s.banner}>
