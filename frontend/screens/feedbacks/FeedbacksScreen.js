@@ -219,6 +219,7 @@ const s = StyleSheet.create({
   reviewDate: { color: T.muted, fontSize: 11 },
   reviewComment: { color: T.subtle, fontSize: 14, lineHeight: 22 },
 
+
   adminReply: { backgroundColor: T.elevated, borderRadius: 10, padding: 12, marginTop: 12, borderLeftWidth: 3, borderLeftColor: T.primary },
   adminReplyHeader: { flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 5 },
   adminReplyLabel: { color: T.primary, fontWeight: '700', fontSize: 12 },
