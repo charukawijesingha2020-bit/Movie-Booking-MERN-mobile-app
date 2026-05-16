@@ -229,4 +229,13 @@ const s = StyleSheet.create({
   totalPrice: { color: T.primary, fontWeight: '800', fontSize: 22 },
   cancelBtn: { flexDirection: 'row', alignItems: 'center', gap: 5, borderWidth: 1, borderColor: T.primary + '66', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 },
   cancelBtnText: { color: T.primary, fontWeight: '700', fontSize: 13 },
+
+  tabBar: { flexDirection: 'row', backgroundColor: T.surface, borderBottomWidth: 1, borderBottomColor: T.border },
+  tabItem: { flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 13, borderBottomWidth: 2, borderBottomColor: 'transparent' },
+  tabItemActive: { borderBottomColor: T.primary },
+  tabText: { color: T.muted, fontSize: 13, fontWeight: '600' },
+  tabTextActive: { color: T.text, fontWeight: '700' },
+  tabBadge: { backgroundColor: T.success + '30', borderRadius: 10, paddingHorizontal: 6, paddingVertical: 1 },
+  tabBadgeCancelled: { backgroundColor: T.primary + '30' },
+  tabBadgeText: { color: T.text, fontSize: 11, fontWeight: '700' },
 });
