@@ -5,8 +5,8 @@ import {
 import api from '../../services/api';
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#f59e0b', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#3b82f6', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', success: '#10b981', danger: '#e50914',
 };
 
