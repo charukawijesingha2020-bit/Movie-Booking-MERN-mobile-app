@@ -7,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#f59e0b', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#3b82f6', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', danger: '#e50914',
 };
 
@@ -113,10 +113,10 @@ export default function AdminLoginScreen({ navigation }) {
           >
             <View style={s.btnSheen} />
             {loading ? (
-              <ActivityIndicator color="#000" />
+              <ActivityIndicator color="#fff" />
             ) : (
               <View style={s.btnInner}>
-                <Ionicons name="shield-checkmark" size={18} color="#000" />
+                <Ionicons name="shield-checkmark" size={18} color="#fff" />
                 <Text style={s.btnText}>Sign In as Admin</Text>
               </View>
             )}
@@ -165,7 +165,7 @@ const s = StyleSheet.create({
   btnDisabled: { opacity: 0.6 },
   btnSheen: { position: 'absolute', top: 0, left: 0, right: 0, height: '50%', backgroundColor: 'rgba(255,255,255,0.12)', borderTopLeftRadius: 14, borderTopRightRadius: 14 },
   btnInner: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  btnText: { color: '#000', fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
+  btnText: { color: '#fff', fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
 
   backPill: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'center', marginTop: 28, backgroundColor: T.surface, borderRadius: 30, paddingHorizontal: 20, paddingVertical: 12, borderWidth: 1, borderColor: T.border },
   backPillText: { color: T.subtle, fontSize: 13, fontWeight: '600' },
