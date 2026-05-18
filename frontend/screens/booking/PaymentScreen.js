@@ -8,11 +8,11 @@ import api from '../../services/api';
 
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#e50914', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#1e56a0', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', success: '#10b981',
-  inputBg: '#1c1c2e', error: '#ef4444', gold: '#c8aa6e',
-  cardBg: '#1a1a2e', cardBorder: '#2d2d4e',
+  inputBg: '#0f2840', error: '#ef4444', gold: '#c8aa6e',
+  cardBg: '#0d1b2a', cardBorder: '#1a3a5c',
 };
 
 const formatCardNumber = (value) => {
@@ -369,7 +369,7 @@ const s = StyleSheet.create({
     shadowColor: T.primary, shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.28, shadowRadius: 18, elevation: 10,
   },
-  cardGlowCircle1: { position: 'absolute', top: -50, right: -30, width: 160, height: 160, borderRadius: 80, backgroundColor: 'rgba(229,9,20,0.07)' },
+  cardGlowCircle1: { position: 'absolute', top: -50, right: -30, width: 160, height: 160, borderRadius: 80, backgroundColor: 'rgba(30,86,160,0.12)' },
   cardGlowCircle2: { position: 'absolute', bottom: -40, left: -20, width: 130, height: 130, borderRadius: 65, backgroundColor: 'rgba(99,102,241,0.06)' },
   cardTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
   chip: { width: 42, height: 32, backgroundColor: T.gold, borderRadius: 6, justifyContent: 'space-around', paddingVertical: 7, paddingHorizontal: 5 },
