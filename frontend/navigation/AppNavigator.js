@@ -36,7 +36,7 @@ import AdminBookingsScreen from '../screens/admin/AdminBookingsScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const COLORS = { primary: '#e50914', adminPrimary: '#f59e0b', dark: '#09090f', card: '#13131f', border: '#252536', text: '#f1f5f9', muted: '#64748b' };
+const COLORS = { primary: '#1e56a0', adminPrimary: '#3b82f6', dark: '#000000', card: '#0d1b2a', border: '#1a3a5c', text: '#f1f5f9', muted: '#64748b' };
 
 // ─── Auth Stack ───────────────────────────────────────────────
 function AuthStack() {
