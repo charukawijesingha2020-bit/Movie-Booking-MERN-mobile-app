@@ -57,7 +57,7 @@ export default function AdminCompaniesScreen() {
     ]);
   };
 
-  if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#E50914" /></View>;
+  if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#3b82f6" /></View>;
 
   return (
     <View style={s.container}>
@@ -69,7 +69,7 @@ export default function AdminCompaniesScreen() {
         data={companies}
         keyExtractor={item => item._id}
         contentContainerStyle={{ padding: 12, paddingBottom: 30 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchCompanies(); }} tintColor="#E50914" />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => { setRefreshing(true); fetchCompanies(); }} tintColor="#3b82f6" />}
         ListEmptyComponent={<Text style={s.empty}>No companies yet.</Text>}
         renderItem={({ item }) => (
           <View style={s.card}>
@@ -130,13 +130,13 @@ export default function AdminCompaniesScreen() {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#141414' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
-  addBtn: { backgroundColor: '#E50914', margin: 12, borderRadius: 10, padding: 14, alignItems: 'center' },
+  container: { flex: 1, backgroundColor: '#000000' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000' },
+  addBtn: { backgroundColor: '#3b82f6', margin: 12, borderRadius: 10, padding: 14, alignItems: 'center' },
   addBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
   empty: { color: '#aaa', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#1a1a1a', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#2a2a2a' },
-  iconCircle: { width: 46, height: 46, borderRadius: 23, backgroundColor: '#E50914', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
+  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#0d1b2a', borderRadius: 12, padding: 14, marginBottom: 10, borderWidth: 1, borderColor: '#1a3a5c' },
+  iconCircle: { width: 46, height: 46, borderRadius: 23, backgroundColor: '#3b82f6', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
   iconText: { color: '#fff', fontWeight: 'bold', fontSize: 20 },
   cardBody: { flex: 1 },
   cardTitle: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
@@ -144,16 +144,16 @@ const s = StyleSheet.create({
   actions: { flexDirection: 'row', gap: 6 },
   editBtn: { backgroundColor: '#2a9d8f', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6 },
   editBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 12 },
-  delBtn: { backgroundColor: '#5a1a1a', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6 },
-  delBtnText: { color: '#E50914', fontWeight: 'bold', fontSize: 12 },
+  delBtn: { backgroundColor: '#1f0a0a', borderRadius: 8, paddingHorizontal: 10, paddingVertical: 6 },
+  delBtnText: { color: '#ef4444', fontWeight: 'bold', fontSize: 12 },
   modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.85)', justifyContent: 'center', padding: 16 },
-  modalCard: { backgroundColor: '#1a1a1a', borderRadius: 18, padding: 20, maxHeight: '85%' },
+  modalCard: { backgroundColor: '#0d1b2a', borderRadius: 18, padding: 20, maxHeight: '85%' },
   modalTitle: { color: '#fff', fontWeight: 'bold', fontSize: 20, marginBottom: 14 },
   mLabel: { color: '#aaa', fontSize: 13, marginBottom: 5, marginTop: 10 },
-  mInput: { backgroundColor: '#2a2a2a', color: '#fff', borderRadius: 8, padding: 11, fontSize: 14, borderWidth: 1, borderColor: '#333' },
+  mInput: { backgroundColor: '#0f2840', color: '#fff', borderRadius: 8, padding: 11, fontSize: 14, borderWidth: 1, borderColor: '#1a3a5c' },
   modalActions: { flexDirection: 'row', gap: 10, marginTop: 18 },
-  cancelBtn: { flex: 1, borderWidth: 1, borderColor: '#444', borderRadius: 10, padding: 13, alignItems: 'center' },
+  cancelBtn: { flex: 1, borderWidth: 1, borderColor: '#1a3a5c', borderRadius: 10, padding: 13, alignItems: 'center' },
   cancelBtnText: { color: '#aaa', fontWeight: 'bold' },
-  saveBtn: { flex: 1, backgroundColor: '#E50914', borderRadius: 10, padding: 13, alignItems: 'center' },
+  saveBtn: { flex: 1, backgroundColor: '#3b82f6', borderRadius: 10, padding: 13, alignItems: 'center' },
   saveBtnText: { color: '#fff', fontWeight: 'bold' },
 });
