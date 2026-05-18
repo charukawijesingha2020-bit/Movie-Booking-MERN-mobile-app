@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import api from '../../services/api';
 
-const COLORS = { primary: '#E50914', dark: '#141414', card: '#1a1a1a', text: '#fff', muted: '#aaa', booked: '#444', selected: '#E50914', available: '#2a9d8f' };
+const COLORS = { primary: '#1e56a0', dark: '#000000', card: '#0d1b2a', text: '#fff', muted: '#aaa', booked: '#333', selected: '#1e56a0', available: '#2a9d8f' };
 
 export default function SeatSelectionScreen({ route, navigation }) {
   const { screeningId } = route.params;
@@ -124,29 +124,29 @@ export default function SeatSelectionScreen({ route, navigation }) {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#141414' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
-  infoBar: { backgroundColor: '#1a1a1a', padding: 14, borderBottomWidth: 1, borderBottomColor: '#333' },
+  container: { flex: 1, backgroundColor: '#000000' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000' },
+  infoBar: { backgroundColor: '#0d1b2a', padding: 14, borderBottomWidth: 1, borderBottomColor: '#1a3a5c' },
   movieTitle: { color: '#fff', fontWeight: 'bold', fontSize: 17 },
   subInfo: { color: '#aaa', fontSize: 12, marginTop: 2 },
   screenWrap: { alignItems: 'center', marginVertical: 16 },
-  screen: { backgroundColor: '#E50914', width: '70%', height: 8, borderRadius: 4, marginBottom: 4 },
+  screen: { backgroundColor: '#1e56a0', width: '70%', height: 8, borderRadius: 4, marginBottom: 4 },
   screenText: { color: '#aaa', fontSize: 11, textAlign: 'center', marginTop: 4 },
   grid: { paddingHorizontal: 12, paddingBottom: 10 },
   row: { flexDirection: 'row', alignItems: 'center', marginBottom: 6 },
   rowLabel: { color: '#aaa', width: 22, fontSize: 12, fontWeight: 'bold' },
   seat: { width: 30, height: 28, borderRadius: 6, justifyContent: 'center', alignItems: 'center', margin: 3 },
   seatAvailable: { backgroundColor: '#2a9d8f' },
-  seatSelected: { backgroundColor: '#E50914' },
-  seatBooked: { backgroundColor: '#444' },
+  seatSelected: { backgroundColor: '#1e56a0' },
+  seatBooked: { backgroundColor: '#333' },
   seatText: { fontSize: 10, fontWeight: 'bold' },
-  legend: { flexDirection: 'row', justifyContent: 'center', paddingVertical: 10, gap: 20, borderTopWidth: 1, borderTopColor: '#333' },
+  legend: { flexDirection: 'row', justifyContent: 'center', paddingVertical: 10, gap: 20, borderTopWidth: 1, borderTopColor: '#1a3a5c' },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   dot: { width: 14, height: 14, borderRadius: 4 },
   legendText: { color: '#aaa', fontSize: 12 },
-  bottomBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#1a1a1a', padding: 16, borderTopWidth: 1, borderTopColor: '#333' },
+  bottomBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0d1b2a', padding: 16, borderTopWidth: 1, borderTopColor: '#1a3a5c' },
   seatsInfo: { color: '#aaa', fontSize: 12, maxWidth: 180 },
-  totalPrice: { color: '#E50914', fontWeight: 'bold', fontSize: 18, marginTop: 2 },
-  bookBtn: { backgroundColor: '#E50914', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12 },
+  totalPrice: { color: '#1e56a0', fontWeight: 'bold', fontSize: 18, marginTop: 2 },
+  bookBtn: { backgroundColor: '#1e56a0', borderRadius: 10, paddingHorizontal: 20, paddingVertical: 12 },
   bookBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 14 },
 });
