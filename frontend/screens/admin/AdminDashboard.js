@@ -4,8 +4,8 @@ import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#f59e0b', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#3b82f6', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', danger: '#e50914',
 };
 
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
 
       <Text style={s.sectionTitle}>Overview</Text>
       <View style={s.statsGrid}>
-        <StatCard icon="🎬" label="Movies" value={stats.movies} color="#e50914" />
+        <StatCard icon="🎬" label="Movies" value={stats.movies} color="#1e56a0" />
         <StatCard icon="🏢" label="Companies" value={stats.companies} color="#10b981" />
         <StatCard icon="🏟️" label="Halls" value={stats.halls} color={T.primary} />
         <StatCard icon="🎟️" label="Bookings" value={stats.bookings} color="#6366f1" />
@@ -103,7 +103,7 @@ const s = StyleSheet.create({
   logoutText: { color: T.danger, fontWeight: '700', fontSize: 13 },
   accountCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: T.surface, marginHorizontal: 16, marginBottom: 8, borderRadius: 18, padding: 16, borderWidth: 1, borderColor: T.primary + '44' },
   avatarWrap: { width: 52, height: 52, borderRadius: 26, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center', marginRight: 14 },
-  avatarText: { color: '#000', fontSize: 22, fontWeight: '800' },
+  avatarText: { color: '#fff', fontSize: 22, fontWeight: '800' },
   accountInfo: { flex: 1 },
   accountName: { color: T.text, fontWeight: '700', fontSize: 16 },
   accountEmail: { color: T.muted, fontSize: 13, marginTop: 2 },

@@ -26,7 +26,7 @@ export default function HallDetailScreen({ route, navigation }) {
     fetch();
   }, [hallId]);
 
-  if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#E50914" /></View>;
+  if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#1e56a0" /></View>;
 
   return (
     <View style={s.container}>
@@ -102,27 +102,27 @@ export default function HallDetailScreen({ route, navigation }) {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#141414' },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#141414' },
+  container: { flex: 1, backgroundColor: '#000000' },
+  center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000' },
 
-  hallBanner: { width: '100%', height: 180, backgroundColor: '#2a2a2a' },
-  header: { backgroundColor: '#1a1a1a', padding: 20, borderBottomWidth: 1, borderBottomColor: '#333' },
+  hallBanner: { width: '100%', height: 180, backgroundColor: '#0f2840' },
+  header: { backgroundColor: '#0d1b2a', padding: 20, borderBottomWidth: 1, borderBottomColor: '#1a3a5c' },
   hallName: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   companyName: { color: '#aaa', fontSize: 14, marginTop: 2, marginBottom: 14 },
   statsRow: { flexDirection: 'row', gap: 12 },
-  stat: { backgroundColor: '#2a2a2a', borderRadius: 10, padding: 12, alignItems: 'center', flex: 1 },
-  statNum: { color: '#E50914', fontSize: 22, fontWeight: 'bold' },
+  stat: { backgroundColor: '#0f2840', borderRadius: 10, padding: 12, alignItems: 'center', flex: 1 },
+  statNum: { color: '#1e56a0', fontSize: 22, fontWeight: 'bold' },
   statLabel: { color: '#aaa', fontSize: 11, marginTop: 2 },
 
   sectionTitle: { color: '#fff', fontSize: 18, fontWeight: 'bold', padding: 16 },
   empty: { color: '#aaa', textAlign: 'center', marginTop: 40, fontSize: 15 },
 
   card: {
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#0d1b2a',
     borderRadius: 14,
     marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#2a2a2a',
+    borderColor: '#1a3a5c',
     overflow: 'hidden',
   },
 
@@ -132,13 +132,13 @@ const s = StyleSheet.create({
     padding: 12,
     gap: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#2a2a2a',
+    borderBottomColor: '#1a3a5c',
   },
   poster: {
     width: 80,
     height: 112,
     borderRadius: 8,
-    backgroundColor: '#2a2a2a',
+    backgroundColor: '#0f2840',
   },
   posterFallback: {
     justifyContent: 'center',
@@ -150,7 +150,7 @@ const s = StyleSheet.create({
   genre: { color: '#aaa', fontSize: 12 },
   meta: { color: '#888', fontSize: 12 },
   detailsLink: { marginTop: 6 },
-  detailsLinkText: { color: '#E50914', fontSize: 12, fontWeight: '600' },
+  detailsLinkText: { color: '#1e56a0', fontSize: 12, fontWeight: '600' },
 
   /* Screening row */
   screeningRow: {
@@ -164,10 +164,10 @@ const s = StyleSheet.create({
   dateTime: { color: '#ccc', fontSize: 13 },
   booked: { color: '#666', fontSize: 11, marginTop: 4 },
   priceBlock: { alignItems: 'flex-end', gap: 2 },
-  price: { color: '#E50914', fontWeight: 'bold', fontSize: 18 },
+  price: { color: '#1e56a0', fontWeight: 'bold', fontSize: 18 },
   perSeat: { color: '#888', fontSize: 10 },
   bookBtn: {
-    backgroundColor: '#E50914',
+    backgroundColor: '#1e56a0',
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 7,

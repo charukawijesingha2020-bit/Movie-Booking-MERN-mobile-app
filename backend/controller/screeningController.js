@@ -3,6 +3,7 @@ const Screening = require('../model/Screening');
 // @route GET /api/screenings
 const getScreenings = async (req, res) => {
   try {
+    // Only expose active screenings to users; getAllScreenings (admin) returns all.
     const screenings = await Screening.find({ isActive: true })
       .populate('movie', 'title poster duration genre rating')
       .populate({ path: 'hall', populate: { path: 'company', select: 'name' } })
