@@ -14,6 +14,19 @@ const T = {
 
 const GENRES = ['All', 'Action', 'Drama', 'Comedy', 'Horror', 'Sci-Fi'];
 
+const PLACEHOLDER = 'https://via.placeholder.com/160x220?text=No+Poster';
+const PosterImage = ({ uri, style }) => {
+  const [error, setError] = React.useState(false);
+  return (
+    <Image
+      source={{ uri: error || !uri ? PLACEHOLDER : uri }}
+      style={style}
+      resizeMode="cover"
+      onError={() => setError(true)}
+    />
+  );
+};
+
 export default function MovieListScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -111,11 +124,7 @@ export default function MovieListScreen({ navigation }) {
         }
         renderItem={({ item }) => (
           <TouchableOpacity style={s.card} onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
-            <Image
-              source={{ uri: item.poster || 'https://via.placeholder.com/160x220?text=No+Poster' }}
-              style={s.poster}
-              resizeMode="cover"
-            />
+            <PosterImage uri={item.poster} style={s.poster} />
             <View style={s.ratingPill}>
               <Ionicons name="star" size={9} color={T.gold} />
               <Text style={s.ratingText}>{item.rating}</Text>
