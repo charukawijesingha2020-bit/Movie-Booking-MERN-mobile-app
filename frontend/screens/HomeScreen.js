@@ -8,6 +8,7 @@ import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const POSTER_PLACEHOLDER = 'https://via.placeholder.com/120x180?text=No+Image';
+const AVATAR_URL = 'https://lh4.googleusercontent.com/proxy/jTL6IVbQ8pwKvriiE3zj_ua7Dem8b6Tn5B06I82jPKSzpT8ZV0R34dOFqAIGFiB_wbC0BhOiE8lDN4qytsOHCmsE3pys6CKJhuuesBqgq1PM28HF';
 const PosterImage = ({ uri, style }) => {
   const [error, setError] = React.useState(false);
   return (
@@ -32,6 +33,7 @@ export default function HomeScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
 
 
   const fetchData = async () => {
@@ -52,8 +54,6 @@ export default function HomeScreen({ navigation }) {
   );
 
   const firstName = user?.name?.split(' ')[0];
-  const [avatarError, setAvatarError] = React.useState(false);
-  const AVATAR_URL = 'https://lh4.googleusercontent.com/proxy/jTL6IVbQ8pwKvriiE3zj_ua7Dem8b6Tn5B06I82jPKSzpT8ZV0R34dOFqAIGFiB_wbC0BhOiE8lDN4qytsOHCmsE3pys6CKJhuuesBqgq1PM28HF';
 
   return (
     <ScrollView
