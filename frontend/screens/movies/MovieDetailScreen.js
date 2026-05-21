@@ -16,6 +16,7 @@ export default function MovieDetailScreen({ route, navigation }) {
   const [movie, setMovie] = useState(null);
   const [screenings, setScreenings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [posterError, setPosterError] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,9 +38,10 @@ export default function MovieDetailScreen({ route, navigation }) {
       {/* Poster */}
       <View style={s.posterWrap}>
         <Image
-          source={{ uri: movie.poster || 'https://via.placeholder.com/400x250?text=No+Poster' }}
+          source={{ uri: posterError || !movie.poster ? 'https://via.placeholder.com/400x250?text=No+Poster' : movie.poster }}
           style={s.poster}
           resizeMode="cover"
+          onError={() => setPosterError(true)}
         />
         <View style={s.posterGradient} />
         <View style={s.ratingBadge}>
