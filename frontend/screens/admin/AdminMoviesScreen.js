@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 const EMPTY_FORM = { title: '', genre: '', duration: '', rating: 'PG-13', language: 'English', description: '', poster: '', director: '', cast: '' };
 
+
 export default function AdminMoviesScreen() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
