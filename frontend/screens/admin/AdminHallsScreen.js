@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 const EMPTY = { name: '', company: '', rows: '', seatsPerRow: '', description: '', image: '' };
 
+
 export default function AdminHallsScreen() {
   const [halls, setHalls] = useState([]);
   const [companies, setCompanies] = useState([]);
