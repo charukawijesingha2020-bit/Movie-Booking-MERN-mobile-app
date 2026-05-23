@@ -8,12 +8,11 @@ import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 const POSTER_PLACEHOLDER = 'https://via.placeholder.com/120x180?text=No+Image';
-const AVATAR_URL = 'https://lh4.googleusercontent.com/proxy/jTL6IVbQ8pwKvriiE3zj_ua7Dem8b6Tn5B06I82jPKSzpT8ZV0R34dOFqAIGFiB_wbC0BhOiE8lDN4qytsOHCmsE3pys6CKJhuuesBqgq1PM28HF';
 const PosterImage = ({ uri, style }) => {
   const [error, setError] = React.useState(false);
   return (
     <Image
-      source={{ uri: error || !uri ? POSTER_PLACEHOLDER : uri }}
+      source={{ uri: error || !uri || !uri.startsWith('http') ? POSTER_PLACEHOLDER : uri }}
       style={style}
       resizeMode="cover"
       onError={() => setError(true)}
@@ -33,7 +32,7 @@ export default function HomeScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [avatarError, setAvatarError] = useState(false);
+
 
 
   const fetchData = async () => {
@@ -63,17 +62,9 @@ export default function HomeScreen({ navigation }) {
       {/* Header */}
       <View style={s.header}>
         <View style={s.headerLeft}>
-          {avatarError ? (
-            <View style={s.avatar}>
-              <Text style={s.avatarText}>{firstName?.charAt(0)?.toUpperCase()}</Text>
-            </View>
-          ) : (
-            <Image
-              source={{ uri: AVATAR_URL }}
-              style={s.avatar}
-              onError={() => setAvatarError(true)}
-            />
-          )}
+          <View style={s.avatar}>
+            <Text style={s.avatarText}>{firstName?.charAt(0)?.toUpperCase()}</Text>
+          </View>
           <View>
             <Text style={s.greeting}>Hey, {firstName} 👋</Text>
             <Text style={s.greetingSub}>What are you watching today?</Text>
