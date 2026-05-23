@@ -19,7 +19,7 @@ const PosterImage = ({ uri, style }) => {
   const [error, setError] = React.useState(false);
   return (
     <Image
-      source={{ uri: error || !uri ? PLACEHOLDER : uri }}
+      source={{ uri: error || !uri || !uri.startsWith('http') ? PLACEHOLDER : uri }}
       style={style}
       resizeMode="cover"
       onError={() => setError(true)}
