@@ -30,7 +30,7 @@ export default function HallDetailScreen({ route, navigation }) {
 
   return (
     <View style={s.container}>
-      {hall?.image ? (
+      {hall?.image && hall.image.startsWith('http') ? (
         <Image source={{ uri: hall.image }} style={s.hallBanner} resizeMode="cover" />
       ) : null}
 
@@ -59,7 +59,7 @@ export default function HallDetailScreen({ route, navigation }) {
               activeOpacity={0.75}
               onPress={() => navigation.navigate('MovieDetail', { movieId: item.movie?._id })}
             >
-              {item.movie?.poster ? (
+              {item.movie?.poster && item.movie.poster.startsWith('http') ? (
                 <Image source={{ uri: item.movie.poster }} style={s.poster} resizeMode="cover" />
               ) : (
                 <View style={[s.poster, s.posterFallback]}>
