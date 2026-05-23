@@ -49,7 +49,7 @@ export default function CompanyDetailScreen({ route, navigation }) {
             style={s.hallCard}
             onPress={() => navigation.navigate('HallDetail', { hallId: item._id, hallName: item.name })}
           >
-            {item.image ? (
+            {item.image && item.image.startsWith('http') ? (
               <Image source={{ uri: item.image }} style={s.hallThumb} resizeMode="cover" />
             ) : (
               <View style={s.hallIcon}><Text style={s.hallIconText}>🎭</Text></View>
