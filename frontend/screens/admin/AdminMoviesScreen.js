@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 const EMPTY_FORM = { title: '', genre: '', duration: '', rating: 'PG-13', language: 'English', description: '', poster: '', director: '', cast: '' };
 
+
 export default function AdminMoviesScreen() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +16,10 @@ export default function AdminMoviesScreen() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
+
+
+
+
 
   const fetchMovies = useCallback(async () => {
     try {
