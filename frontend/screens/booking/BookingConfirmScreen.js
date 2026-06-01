@@ -1,5 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import * as Sharing from 'expo-sharing';
+import { generateTicketPdf } from '../../utils/generateTicketPdf';
 
 const T = {
   bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
@@ -18,6 +21,29 @@ const Row = ({ label, value, highlight }) => (
 export default function BookingConfirmScreen({ route, navigation }) {
   const { booking } = route.params;
   const sc = booking?.screening;
+  const [downloading, setDownloading] = useState(false);
+
+  const handleDownloadPdf = async () => {
+    setDownloading(true);
+    try {
+      const uri = await generateTicketPdf(booking);
+      const canShare = await Sharing.isAvailableAsync();
+      if (canShare) {
+        await Sharing.shareAsync(uri, {
+          mimeType: 'application/pdf',
+          dialogTitle: 'Save or Share your Movie Ticket',
+          UTI: 'com.adobe.pdf',
+        });
+      } else {
+        Alert.alert('Saved', `Ticket saved to: ${uri}`);
+      }
+    } catch (err) {
+      Alert.alert('Error', 'Could not generate PDF. Please try again.');
+      console.error(err);
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <ScrollView style={s.container} contentContainerStyle={s.content}>
@@ -58,6 +84,23 @@ export default function BookingConfirmScreen({ route, navigation }) {
       <TouchableOpacity style={s.btnPrimary} onPress={() => navigation.navigate('MyBookings')}>
         <Text style={s.btnPrimaryText}>View My Tickets</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[s.btnDownload, downloading && s.btnDisabled]}
+        onPress={handleDownloadPdf}
+        disabled={downloading}
+        activeOpacity={0.82}
+      >
+        {downloading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Ionicons name="download-outline" size={18} color="#fff" />
+        )}
+        <Text style={s.btnDownloadText}>
+          {downloading ? 'Generating PDF…' : 'Download Ticket (PDF)'}
+        </Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={s.btnOutline} onPress={() => navigation.navigate('Home')}>
         <Text style={s.btnOutlineText}>Back to Home</Text>
       </TouchableOpacity>
@@ -88,6 +131,15 @@ const s = StyleSheet.create({
   separator: { height: 1, backgroundColor: T.border, marginVertical: 12 },
   btnPrimary: { backgroundColor: T.primary, borderRadius: 16, padding: 17, alignItems: 'center', width: '100%', marginTop: 20 },
   btnPrimaryText: { color: '#fff', fontWeight: '700', fontSize: 16 },
+  btnDownload: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+    backgroundColor: '#16a34a', borderRadius: 16, padding: 16,
+    width: '100%', marginTop: 12,
+    shadowColor: '#16a34a', shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4, shadowRadius: 10, elevation: 6,
+  },
+  btnDisabled: { opacity: 0.6 },
+  btnDownloadText: { color: '#fff', fontWeight: '700', fontSize: 15 },
   btnOutline: { borderWidth: 1, borderColor: T.border, borderRadius: 16, padding: 15, alignItems: 'center', width: '100%', marginTop: 12 },
   btnOutlineText: { color: T.muted, fontSize: 14, fontWeight: '600' },
 });
