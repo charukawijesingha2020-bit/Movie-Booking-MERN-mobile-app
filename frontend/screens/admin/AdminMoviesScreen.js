@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 const EMPTY_FORM = { title: '', genre: '', duration: '', rating: 'PG-13', language: 'English', description: '', poster: '', director: '', cast: '' };
 
+
 export default function AdminMoviesScreen() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,6 +16,10 @@ export default function AdminMoviesScreen() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [editing, setEditing] = useState(null);
   const [saving, setSaving] = useState(false);
+
+
+
+
 
   const fetchMovies = useCallback(async () => {
     try {
@@ -162,7 +167,7 @@ export default function AdminMoviesScreen() {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#000000' },
+  container: { flex: 1, backgroundColor: '#000001' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000' },
   addBtn: { backgroundColor: '#3b82f6', margin: 12, borderRadius: 10, padding: 14, alignItems: 'center' },
   addBtnText: { color: '#fff', fontWeight: 'bold', fontSize: 15 },

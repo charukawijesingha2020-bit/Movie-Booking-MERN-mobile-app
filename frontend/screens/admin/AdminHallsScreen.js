@@ -7,6 +7,7 @@ import api from '../../services/api';
 
 const EMPTY = { name: '', company: '', rows: '', seatsPerRow: '', description: '', image: '' };
 
+
 export default function AdminHallsScreen() {
   const [halls, setHalls] = useState([]);
   const [companies, setCompanies] = useState([]);
@@ -86,7 +87,7 @@ export default function AdminHallsScreen() {
         ListEmptyComponent={<Text style={s.empty}>No halls yet.</Text>}
         renderItem={({ item }) => (
           <View style={s.card}>
-            {item.image ? (
+            {item.image && item.image.startsWith('http') ? (
               <Image source={{ uri: item.image }} style={s.cardThumb} resizeMode="cover" />
             ) : (
               <View style={[s.cardThumb, s.cardThumbFallback]}>
@@ -141,7 +142,7 @@ export default function AdminHallsScreen() {
               <TextInput style={s.mInput} placeholder="https://..." placeholderTextColor="#555"
                 value={form.image} onChangeText={v => setForm(p => ({ ...p, image: v }))}
                 autoCapitalize="none" keyboardType="url" />
-              {form.image ? (
+              {form.image && form.image.startsWith('http') ? (
                 <Image source={{ uri: form.image }} style={s.imagePreview} resizeMode="cover" />
               ) : null}
 

@@ -7,6 +7,19 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
+const POSTER_PLACEHOLDER = 'https://via.placeholder.com/120x180?text=No+Image';
+const PosterImage = ({ uri, style }) => {
+  const [error, setError] = React.useState(false);
+  return (
+    <Image
+      source={{ uri: error || !uri || !uri.startsWith('http') ? POSTER_PLACEHOLDER : uri }}
+      style={style}
+      resizeMode="cover"
+      onError={() => setError(true)}
+    />
+  );
+};
+
 const T = {
   bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
   border: '#1a3a5c', primary: '#1e56a0', text: '#f1f5f9',
@@ -19,6 +32,7 @@ export default function HomeScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
 
 
   const fetchData = async () => {
@@ -106,11 +120,7 @@ export default function HomeScreen({ navigation }) {
         {movies.map(item => (
           <TouchableOpacity key={item._id} style={s.movieCard}
             onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
-            <Image
-              source={{ uri: item.poster || 'https://via.placeholder.com/120x180?text=No+Image' }}
-              style={s.moviePoster}
-              resizeMode="cover"
-            />
+            <PosterImage uri={item.poster} style={s.moviePoster} />
             <View style={s.posterOverlay} />
             <View style={s.ratingPill}>
               <Ionicons name="star" size={10} color={T.gold} />
@@ -168,7 +178,7 @@ const s = StyleSheet.create({
 
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingTop: 14 },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  avatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center' },
+  avatar: { width: 42, height: 42, borderRadius: 21, backgroundColor: T.primary, justifyContent: 'center', alignItems: 'center', overflow: 'hidden' },
   avatarText: { color: '#fff', fontWeight: '800', fontSize: 18 },
   greeting: { fontSize: 18, fontWeight: '800', color: T.text },
   greetingSub: { color: T.muted, fontSize: 12, marginTop: 2 },
