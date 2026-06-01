@@ -46,6 +46,7 @@ export default function HallDetailScreen({ route, navigation }) {
 
       <Text style={s.sectionTitle}>🎬 Screenings</Text>
 
+
       <FlatList
         data={screenings}
         keyExtractor={item => item._id}
