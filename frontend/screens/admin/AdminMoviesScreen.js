@@ -166,6 +166,8 @@ export default function AdminMoviesScreen() {
   );
 }
 
+
+
 const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#000001' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#000000' },
