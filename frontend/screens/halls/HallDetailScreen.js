@@ -11,6 +11,7 @@ export default function HallDetailScreen({ route, navigation }) {
   const [screenings, setScreenings] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -28,6 +29,8 @@ export default function HallDetailScreen({ route, navigation }) {
 
   if (loading) return <View style={s.center}><ActivityIndicator size="large" color="#1e56a0" /></View>;
 
+
+
   return (
     <View style={s.container}>
       {hall?.image && hall.image.startsWith('http') ? (
@@ -44,7 +47,9 @@ export default function HallDetailScreen({ route, navigation }) {
         </View>
       </View>
 
-      <Text style={s.sectionTitle}>🎬 Screenings</Text>
+      <Text style={s.sectionTitle}> Screenings</Text>
+
+
 
 
       <FlatList
