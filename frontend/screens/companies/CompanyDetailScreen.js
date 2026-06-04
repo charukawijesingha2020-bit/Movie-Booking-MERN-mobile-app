@@ -9,6 +9,7 @@ export default function CompanyDetailScreen({ route, navigation }) {
   const [loading, setLoading] = useState(true);
 
 
+
   useEffect(() => {
     const fetch = async () => {
       try {

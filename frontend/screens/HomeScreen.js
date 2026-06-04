@@ -7,6 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
+
+
 const POSTER_PLACEHOLDER = 'https://via.placeholder.com/120x180?text=No+Image';
 const PosterImage = ({ uri, style }) => {
   const [error, setError] = React.useState(false);
