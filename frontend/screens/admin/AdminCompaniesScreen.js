@@ -7,6 +7,8 @@ import api from '../../services/api';
 
 const EMPTY = { name: '', address: '', phone: '', description: '', logo: '' };
 
+
+
 export default function AdminCompaniesScreen() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,6 +34,8 @@ export default function AdminCompaniesScreen() {
     setForm({ name: c.name, address: c.address, phone: c.phone || '', description: c.description || '', logo: c.logo || '' });
     setModalVisible(true);
   };
+
+
 
   const handleSave = async () => {
     if (!form.name.trim() || !form.address.trim())

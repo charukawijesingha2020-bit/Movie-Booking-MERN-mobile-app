@@ -6,8 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#e50914', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#1e56a0', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', gold: '#fbbf24', success: '#10b981',
 };
 
@@ -16,6 +16,7 @@ export default function MovieDetailScreen({ route, navigation }) {
   const [movie, setMovie] = useState(null);
   const [screenings, setScreenings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [posterError, setPosterError] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,9 +38,10 @@ export default function MovieDetailScreen({ route, navigation }) {
       {/* Poster */}
       <View style={s.posterWrap}>
         <Image
-          source={{ uri: movie.poster || 'https://via.placeholder.com/400x250?text=No+Poster' }}
+          source={{ uri: posterError || !movie.poster || !movie.poster.startsWith('http') ? 'https://via.placeholder.com/400x250?text=No+Poster' : movie.poster }}
           style={s.poster}
           resizeMode="cover"
+          onError={() => setPosterError(true)}
         />
         <View style={s.posterGradient} />
         <View style={s.ratingBadge}>

@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const User = require('../model/User');
 
 // @desc  Register user
-// @route POST /api/auth/register
+// @route  POST /api/auth/register
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -48,6 +48,7 @@ const loginUser = async (req, res) => {
       role: user.role,
       token,
     });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -58,5 +59,6 @@ const loginUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
   res.json(req.user);
 };
+
 
 module.exports = { registerUser, loginUser, getUserProfile };

@@ -7,12 +7,25 @@ import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 
 const T = {
-  bg: '#09090f', surface: '#13131f', elevated: '#1c1c2e',
-  border: '#252536', primary: '#e50914', text: '#f1f5f9',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  border: '#1a3a5c', primary: '#1e56a0', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', gold: '#fbbf24',
 };
 
 const GENRES = ['All', 'Action', 'Drama', 'Comedy', 'Horror', 'Sci-Fi'];
+
+const PLACEHOLDER = 'https://via.placeholder.com/160x220?text=No+Poster';
+const PosterImage = ({ uri, style }) => {
+  const [error, setError] = React.useState(false);
+  return (
+    <Image
+      source={{ uri: error || !uri || !uri.startsWith('http') ? PLACEHOLDER : uri }}
+      style={style}
+      resizeMode="cover"
+      onError={() => setError(true)}
+    />
+  );
+};
 
 export default function MovieListScreen({ navigation }) {
   const [movies, setMovies] = useState([]);
@@ -111,11 +124,7 @@ export default function MovieListScreen({ navigation }) {
         }
         renderItem={({ item }) => (
           <TouchableOpacity style={s.card} onPress={() => navigation.navigate('MovieDetail', { movieId: item._id })}>
-            <Image
-              source={{ uri: item.poster || 'https://via.placeholder.com/160x220?text=No+Poster' }}
-              style={s.poster}
-              resizeMode="cover"
-            />
+            <PosterImage uri={item.poster} style={s.poster} />
             <View style={s.ratingPill}>
               <Ionicons name="star" size={9} color={T.gold} />
               <Text style={s.ratingText}>{item.rating}</Text>
