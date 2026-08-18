@@ -46,6 +46,7 @@ const updateCompany = async (req, res) => {
   }
 };
 
+
 // @route DELETE /api/companies/:id  [Admin]
 const deleteCompany = async (req, res) => {
   try {
