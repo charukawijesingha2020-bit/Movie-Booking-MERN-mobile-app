@@ -22,6 +22,7 @@ const getCompanyById = async (req, res) => {
   }
 };
 
+
 // @route POST /api/companies  [Admin]
 const createCompany = async (req, res) => {
   try {
