@@ -35,6 +35,7 @@ const createCompany = async (req, res) => {
   }
 };
 
+
 // @route PUT /api/companies/:id  [Admin]
 const updateCompany = async (req, res) => {
   try {
