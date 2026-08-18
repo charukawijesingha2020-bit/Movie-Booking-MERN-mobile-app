@@ -59,5 +59,7 @@ const deleteCompany = async (req, res) => {
   }
 };
 
+
+
 module.exports = { getCompanies, getCompanyById, createCompany, updateCompany, deleteCompany };
 
