@@ -29,6 +29,8 @@ const getScreeningsByHall = async (req, res) => {
   }
 };
 
+
+
 // @route GET /api/screenings/movie/:movieId
 const getScreeningsByMovie = async (req, res) => {
   try {
