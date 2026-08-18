@@ -55,6 +55,7 @@ const getMyBookings = async (req, res) => {
   }
 };
 
+
 // @route GET /api/bookings  [Admin]
 const getAllBookings = async (req, res) => {
   try {
