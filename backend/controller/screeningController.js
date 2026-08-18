@@ -14,6 +14,8 @@ const getScreenings = async (req, res) => {
   }
 };
 
+
+
 // @route GET /api/screenings/hall/:hallId
 const getScreeningsByHall = async (req, res) => {
   try {
