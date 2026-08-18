@@ -1,6 +1,7 @@
 const Booking = require('../model/Booking');
 const Screening = require('../model/Screening');
 
+
 // @route POST /api/bookings  [User]
 const createBooking = async (req, res) => {
   try {
