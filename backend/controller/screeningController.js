@@ -57,6 +57,8 @@ const getScreeningById = async (req, res) => {
   }
 };
 
+
+
 // @route POST /api/screenings  [Admin]
 const createScreening = async (req, res) => {
   try {
