@@ -10,6 +10,7 @@ const getCompanies = async (req, res) => {
   }
 };
 
+
 // @route GET /api/companies/:id
 const getCompanyById = async (req, res) => {
   try {
