@@ -42,6 +42,7 @@ const createBooking = async (req, res) => {
   }
 };
 
+
 // @route GET /api/bookings/my  [User]
 const getMyBookings = async (req, res) => {
   try {
