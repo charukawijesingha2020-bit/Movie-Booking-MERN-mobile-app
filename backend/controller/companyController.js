@@ -1,5 +1,7 @@
 const CinemaCompany = require('../model/CinemaCompany');
 
+
+
 // @route GET /api/companies
 const getCompanies = async (req, res) => {
   try {
@@ -9,6 +11,8 @@ const getCompanies = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 // @route GET /api/companies/:id
 const getCompanyById = async (req, res) => {
@@ -43,6 +47,7 @@ const updateCompany = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // @route DELETE /api/companies/:id  [Admin]
 const deleteCompany = async (req, res) => {
