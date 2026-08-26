@@ -13,7 +13,7 @@ const getCompanies = async (req, res) => {
 };
 
 
-
+ 
 // @route GET /api/companies/:id
 const getCompanyById = async (req, res) => {
   try {
@@ -24,6 +24,7 @@ const getCompanyById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // @route POST /api/companies  [Admin]
 const createCompany = async (req, res) => {
@@ -36,6 +37,7 @@ const createCompany = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // @route PUT /api/companies/:id  [Admin]
 const updateCompany = async (req, res) => {
@@ -59,6 +61,8 @@ const deleteCompany = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 module.exports = { getCompanies, getCompanyById, createCompany, updateCompany, deleteCompany };
 

@@ -1,8 +1,6 @@
 const Booking = require('../model/Booking');
 const Screening = require('../model/Screening');
 
-
-
 // @route POST /api/bookings  [User]
 const createBooking = async (req, res) => {
   try {
@@ -43,6 +41,7 @@ const createBooking = async (req, res) => {
   }
 };
 
+
 // @route GET /api/bookings/my  [User]
 const getMyBookings = async (req, res) => {
   try {
@@ -54,6 +53,7 @@ const getMyBookings = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 // @route GET /api/bookings  [Admin]
 const getAllBookings = async (req, res) => {

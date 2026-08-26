@@ -14,6 +14,8 @@ const getScreenings = async (req, res) => {
   }
 };
 
+
+
 // @route GET /api/screenings/hall/:hallId
 const getScreeningsByHall = async (req, res) => {
   try {
@@ -26,6 +28,8 @@ const getScreeningsByHall = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 // @route GET /api/screenings/movie/:movieId
 const getScreeningsByMovie = async (req, res) => {
@@ -52,6 +56,8 @@ const getScreeningById = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 // @route POST /api/screenings  [Admin]
 const createScreening = async (req, res) => {
