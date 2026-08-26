@@ -1,5 +1,7 @@
 const CinemaCompany = require('../model/CinemaCompany');
 
+
+
 // @route GET /api/companies
 const getCompanies = async (req, res) => {
   try {
@@ -11,6 +13,7 @@ const getCompanies = async (req, res) => {
 };
 
 
+ 
 // @route GET /api/companies/:id
 const getCompanyById = async (req, res) => {
   try {
