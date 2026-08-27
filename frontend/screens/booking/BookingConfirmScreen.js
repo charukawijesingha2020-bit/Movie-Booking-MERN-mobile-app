@@ -5,7 +5,7 @@ import * as Sharing from 'expo-sharing';
 import { generateTicketPdf } from '../../utils/generateTicketPdf';
 
 const T = {
-  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2840',
+  bg: '#000000', surface: '#0d1b2a', elevated: '#0f2844',
   border: '#1a3a5c', primary: '#1e56a0', text: '#f1f5f9',
   muted: '#64748b', subtle: '#94a3b8', success: '#10b981', gold: '#fbbf24',
 };
